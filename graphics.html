@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1794769448">
+  <link rel="stylesheet" href="style.css?v=1794774654">
 </head>
 <body class="workpage graphicspage">
   <a class="vname" href="index.html" aria-label="Eve Irem, home"><span>eve</span><span>irem</span></a>
@@ -31,11 +31,19 @@
     </filter>
   </svg>
 
-  <main class="work">
-    <h1>graphics</h1>
-    <p class="g-intro">identities, flyers, and a tattoo or two.</p>
-    <div class="filters" id="filters" role="group" aria-label="Filter graphics"></div>
-    <div class="masonry" id="masonry"></div>
+  <main class="work gpage">
+    <header class="g-head">
+      <div class="g-head-text">
+        <h1>graphics</h1>
+        <nav class="g-filters" id="filters" aria-label="Filter graphics"></nav>
+      </div>
+      <canvas class="lowpoly lp-star" data-shape="star" aria-hidden="true"></canvas>
+    </header>
+    <div class="gwall" id="masonry"></div>
+    <footer class="g-foot">
+      <canvas class="lowpoly lp-gem" data-shape="gem" aria-hidden="true"></canvas>
+      <p>more in the archive — <a href="mailto:eve.iremu@gmail.com">ask me</a></p>
+    </footer>
   </main>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -45,8 +53,10 @@
     <button class="lb-nav lb-next" aria-label="Next">›</button>
   </div>
 
-  <script src="graphics.js?v=1794769448"></script>
-  <script src="fx.js?v=1794769448" defer></script>
+  <script src="graphics.js?v=1794774654"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="lowpoly.js?v=1794774654" defer></script>
+  <script src="fx.js?v=1794774654" defer></script>
   <script>
     const grid = document.getElementById("masonry");
     const filters = document.getElementById("filters");
@@ -65,22 +75,32 @@
       visible = GRAPHICS.filter((g) => kind === "all" || g.kind === kind);
       visible.forEach((g, i) => {
         const b = document.createElement("button");
-        b.className = "g-item";
+        b.className = "gw-item" + (g.big ? " big" : "");
         b.type = "button";
-        b.innerHTML = `<div class="g-media${g.fit === "contain" ? " contain" : ""}"${g.pos ? ` style="--pos:${g.pos}"` : ""}>${media(g)}</div><p><b>${g.title}</b><span>${g.kind}${g.year ? " · " + g.year : ""}${g.more ? " · +" + g.more.length : ""}</span></p>`;
+        b.setAttribute("aria-label", `${plain(g.title)}, ${g.kind}`);
+        b.innerHTML = `<div class="gw-inner"><div class="g-media">${media(g)}</div>
+          <p class="gw-cap"><b>${g.title}</b><span>${g.kind}${g.year ? " · " + g.year : ""}${g.more ? " · +" + g.more.length : ""}</span></p></div>`;
         b.addEventListener("click", () => open(i));
         grid.appendChild(b);
+        sizer.observe(b.firstElementChild);
       });
     }
+
+    // masonry with mixed widths: every card spans as many 4px rows as its content is tall,
+    // re-measured whenever the card changes size (image loads, window resizes)
+    const sizer = new ResizeObserver((entries) => entries.forEach((en) => {
+      const inner = en.target, row = 4;
+      inner.parentElement.style.gridRowEnd = `span ${Math.max(1, Math.ceil(inner.offsetHeight / row))}`;
+    }));
 
     const kinds = ["all", ...new Set(GRAPHICS.map((g) => g.kind))];
     kinds.forEach((k, i) => {
       const c = document.createElement("button");
-      c.className = "filter" + (i === 0 ? " on" : "");
+      c.type = "button";
+      c.className = "gf" + (i === 0 ? " on" : "");
       c.textContent = k;
       c.addEventListener("click", () => {
-        filters.querySelectorAll(".filter").forEach((f) => f.classList.remove("on"));
-        c.classList.add("on");
+        filters.querySelectorAll(".gf").forEach((f) => f.classList.toggle("on", f === c));
         render(k);
       });
       filters.appendChild(c);

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1794769448">
+  <link rel="stylesheet" href="style.css?v=1794774654">
 </head>
 <body class="workpage">
   <a class="vname" href="index.html" aria-label="Eve Irem, home"><span>eve</span><span>irem</span></a>
@@ -28,8 +28,8 @@
     <div class="archive" id="archiveGrid"></div>
   </main>
 
-  <script src="projects.js?v=1794769448"></script>
-  <script src="fx.js?v=1794769448" defer></script>
+  <script src="projects.js?v=1794774654"></script>
+  <script src="fx.js?v=1794774654" defer></script>
   <script>
     const featured = document.getElementById("featured");
     const archive = document.getElementById("archiveGrid");
@@ -48,7 +48,7 @@
         <div class="meta">
           <p class="venue">${p.venue}</p>
           <h2>${p.title}</h2>
-          ${p.role ? `<p class="role"><span>role</span>${p.role}</p>` : ""}
+          ${p.role ? `<p class="role">${p.role}</p>` : ""}
           ${p.about ? `<p class="tag">${p.about}</p>` : ""}
           ${p.versions ? `<div class="langs">${p.versions.map((v, k) => `<button type="button" data-k="${k}"${k ? "" : ` class="on"`}>${v.label}</button>`).join("")}</div>` : ""}
         </div>`;

@@ -15,13 +15,13 @@ const vimeoThumb = (t) => `https://i.vimeocdn.com/video/${t}-d_1280x720`;
 
 window.PROJECTS = [
   { id: "jericho", title: "Iniko — Jericho", venue: "Sony Innovation Studios", cat: "virtual production", big: true,
-    role: "Technical Artist, virtual production",
-    about: "Official music video shot on an LED volume, with virtual environments by Sony Immersive Music Studios.",
+    role: "Virtual production lead · 3D environment & experience design · real-time scene operation",
+    about: "Official music video shot on the LED volume at Sony Innovation Studios. Led the real-time side of the production: designing the 3D environments and the on-set experience, and operating the scenes live during the shoot.",
     type: "yt", vid: "C8BP8K-ZuL0", thumb: yt("C8BP8K-ZuL0", "maxres2") },
 
   { id: "nab", title: "Virtual Production & 3D Rendering Reel", venue: "NAB Show 2023", cat: "virtual production", big: true,
-    role: "Technical Artist, real-time production",
-    about: "Volumetric environments and real-time rendering workflows from Sony Innovation Studios.",
+    role: "Technical art direction",
+    about: "Sony Innovation Studios' showcase reel for NAB 2023: volumetric environments, real-time rendering and the pipelines behind them.",
     type: "yt", vid: "nXGUVgeHsto", thumb: yt("nXGUVgeHsto", "maxres2") },
 
   { id: "talk", title: "Future of Virtual Production in Music", venue: "SIGGRAPH", cat: "virtual production", big: true,
@@ -66,7 +66,7 @@ window.PROJECTS = [
     thumb: vimeoThumb("745427094-f36ef3d58e5b69adf98746ad6444b4280ef1a68f1b7d65faca76d76def6d97d7") },
 
   { id: "jericho-bts", title: "Iniko — Jericho: Behind the Scenes", venue: "Sony Music Video Production", cat: "virtual production",
-    role: "Technical Artist, virtual production",
+    role: "Virtual production lead · real-time scene operation",
     about: "Making of the Jericho video inside the LED volume.",
     type: "vimeo", vid: "853842701", ring: false,
     thumb: vimeoThumb("1709520584-88ad9bc2fba6f096d6cccf845ff0782102d0ed9ab99a17fbd2ab3f9bff1b1a08") },

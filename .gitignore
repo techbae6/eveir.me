@@ -4,3 +4,4 @@ directions.html
 # local tooling
 .claude/
 .DS_Store
+_cand/
