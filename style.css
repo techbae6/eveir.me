@@ -619,3 +619,11 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 .gw-item { padding-bottom: 0; }
 .gw-inner { padding-bottom: 26px; }
 .player img[src*="/maxres1"], .player img[src*="/maxres2"], .player img[src*="/maxres3"] { transform: scale(1.45); }
+
+/* entrance word: one size that fits "willkommen" */
+.landing .enter { font-size: clamp(3rem, 8.6vw, 8rem); }
+.enter .word { display: inline-block; }
+.enter .word i { font-style: normal; color: #fff; opacity: .9; text-shadow: 0 0 18px rgba(255,255,255,.6); }
+.enter .word.tuning { animation: flicker .12s steps(2) infinite; }
+@keyframes flicker { 50% { opacity: .82; transform: translateX(1px) skewX(-3deg); } }
+@media (max-width: 760px) { .landing .enter { font-size: 12.5vw; } }

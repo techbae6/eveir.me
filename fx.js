@@ -97,7 +97,7 @@
   }
 
   /* 7 ─ "enter" letters do a wave when you get close */
-  const enter = document.querySelector(".enter");
+  const enter = document.querySelector(".enter:not(:has(.word))");
   if (enter) {
     enter.innerHTML = [...enter.textContent].map((c, i) => `<span style="--i:${i}">${c}</span>`).join("");
     enter.setAttribute("aria-label", "enter");

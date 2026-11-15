@@ -148,3 +148,44 @@ if (mail) {
   });
   mail.addEventListener("pointerleave", () => { mail.style.setProperty("--mx", "0px"); mail.style.setProperty("--my", "0px"); });
 }
+
+/* ── entrance word: merhaba → welcome → willkommen ────────── */
+// Each word decodes out of random glyphs, holds, then scrambles into the next,
+// like a signal being tuned in. Clicking the word still enters the site.
+(() => {
+  const el = document.getElementById("word");
+  if (!el) return;
+  const WORDS = ["merhaba", "welcome", "willkommen"];
+  const GLYPHS = "▓▒░█<>/\\|_=+*#01{}[]";
+  let i = 0;
+  const show = (s) => { el.innerHTML = s; };
+  function morph(to, done) {
+    const from = el.textContent;
+    const len = Math.max(from.length, to.length);
+    // each letter settles at its own moment, left to right with a little jitter
+    const settle = [...Array(len)].map((_, k) => 6 + k * 2 + Math.floor(Math.random() * 6));
+    let f = 0;
+    (function tick() {
+      let out = "", doneAll = true;
+      for (let k = 0; k < len; k++) {
+        if (f >= settle[k]) { out += to[k] || ""; continue; }
+        doneAll = false;
+        out += f < settle[k] - 4 && from[k] && Math.random() < 0.35
+          ? from[k]
+          : `<i>${GLYPHS[(Math.random() * GLYPHS.length) | 0]}</i>`;
+      }
+      show(out);
+      f++;
+      if (doneAll) { el.classList.remove("tuning"); done && done(); }
+      else requestAnimationFrame(() => setTimeout(tick, 34));
+    })();
+    el.classList.add("tuning");
+  }
+  if (reduce) return; // keep "merhaba" still for reduced motion
+  (function loop() {
+    setTimeout(() => {
+      i = (i + 1) % WORDS.length;
+      morph(WORDS[i], loop);
+    }, 2400);
+  })();
+})();
