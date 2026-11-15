@@ -1,0 +1,6 @@
+# test versions and drafts, not part of the live site
+proto/
+directions.html
+# local tooling
+.claude/
+.DS_Store

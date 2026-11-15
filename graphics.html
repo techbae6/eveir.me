@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>eve irem — graphics</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%231a2cff%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27Arial Black,Arial%27 font-weight=%27900%27 font-size=%2720%27 text-anchor=%27middle%27 fill=%27%23ff4b2b%27%3Ee%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1794769448">
+</head>
+<body class="workpage graphicspage">
+  <a class="vname" href="index.html" aria-label="Eve Irem, home"><span>eve</span><span>irem</span></a>
+  <nav class="toplinks" aria-label="Main">
+    <a href="index.html">home</a>
+    <a href="work.html">work</a>
+    <a href="graphics.html" aria-current="page">graphics</a>
+    <a href="index.html#about">about</a>
+  </nav>
+
+  <!-- blue ink duotone: shadows become deep blue, highlights become paper -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="duo" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.04 0.957"/>
+        <feFuncG type="table" tableValues="0.07 0.945"/>
+        <feFuncB type="table" tableValues="0.62 0.918"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <main class="work">
+    <h1>graphics</h1>
+    <p class="g-intro">identities, flyers, and a tattoo or two.</p>
+    <div class="filters" id="filters" role="group" aria-label="Filter graphics"></div>
+    <div class="masonry" id="masonry"></div>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close" aria-label="Close">×</button>
+    <button class="lb-nav lb-prev" aria-label="Previous">‹</button>
+    <figure><div class="lb-media" id="lbMedia"></div><figcaption id="lbCap"></figcaption></figure>
+    <button class="lb-nav lb-next" aria-label="Next">›</button>
+  </div>
+
+  <script src="graphics.js?v=1794769448"></script>
+  <script src="fx.js?v=1794769448" defer></script>
+  <script>
+    const grid = document.getElementById("masonry");
+    const filters = document.getElementById("filters");
+    const lb = document.getElementById("lightbox");
+    const lbMedia = document.getElementById("lbMedia");
+    const lbCap = document.getElementById("lbCap");
+    let visible = [], current = 0;
+
+    const plain = (t) => t.replace(/<[^>]+>/g, "").trim();
+    const media = (g) => g.src
+      ? `<img src="${g.src}" alt="${plain(g.title)}" loading="lazy">`
+      : `<div class="ph ph-${g.shape || "square"}"><span>${g.title}</span><small>add image in graphics.js</small></div>`;
+
+    function render(kind) {
+      grid.innerHTML = "";
+      visible = GRAPHICS.filter((g) => kind === "all" || g.kind === kind);
+      visible.forEach((g, i) => {
+        const b = document.createElement("button");
+        b.className = "g-item";
+        b.type = "button";
+        b.innerHTML = `<div class="g-media${g.fit === "contain" ? " contain" : ""}"${g.pos ? ` style="--pos:${g.pos}"` : ""}>${media(g)}</div><p><b>${g.title}</b><span>${g.kind}${g.year ? " · " + g.year : ""}${g.more ? " · +" + g.more.length : ""}</span></p>`;
+        b.addEventListener("click", () => open(i));
+        grid.appendChild(b);
+      });
+    }
+
+    const kinds = ["all", ...new Set(GRAPHICS.map((g) => g.kind))];
+    kinds.forEach((k, i) => {
+      const c = document.createElement("button");
+      c.className = "filter" + (i === 0 ? " on" : "");
+      c.textContent = k;
+      c.addEventListener("click", () => {
+        filters.querySelectorAll(".filter").forEach((f) => f.classList.remove("on"));
+        c.classList.add("on");
+        render(k);
+      });
+      filters.appendChild(c);
+    });
+    render("all");
+
+    function open(i) {
+      current = (i + visible.length) % visible.length;
+      const g = visible[current];
+      const all = g.src ? [g.src, ...(g.more || [])] : [];
+      lbMedia.innerHTML = all.length
+        ? all.map((src) => `<img src="${src}" alt="${plain(g.title)}">`).join("")
+        : media(g);
+      lbMedia.scrollLeft = 0;
+      lbCap.innerHTML = `<b>${g.title}</b> — ${g.kind}${g.year ? ", " + g.year : ""}${g.desc ? `<span class="lb-desc">${g.desc}</span>` : ""}`;
+      lb.classList.add("open");
+      lb.setAttribute("aria-hidden", "false");
+    }
+    function close() { lb.classList.remove("open"); lb.setAttribute("aria-hidden", "true"); }
+    lb.querySelector(".lb-close").addEventListener("click", close);
+    lb.querySelector(".lb-prev").addEventListener("click", () => open(current - 1));
+    lb.querySelector(".lb-next").addEventListener("click", () => open(current + 1));
+    lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+    addEventListener("keydown", (e) => {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") open(current - 1);
+      if (e.key === "ArrowRight") open(current + 1);
+    });
+  </script>
+</body>
+</html>

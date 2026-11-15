@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>eve irem — work</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%231a2cff%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27Arial Black,Arial%27 font-weight=%27900%27 font-size=%2720%27 text-anchor=%27middle%27 fill=%27%23ff4b2b%27%3Ee%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1794769448">
+</head>
+<body class="workpage">
+  <a class="vname" href="index.html" aria-label="Eve Irem, home"><span>eve</span><span>irem</span></a>
+  <nav class="toplinks" aria-label="Main">
+    <a href="index.html">home</a>
+    <a href="work.html" aria-current="page">work</a>
+    <a href="graphics.html">graphics</a>
+    <a href="index.html#about">about</a>
+  </nav>
+
+  <main class="work">
+    <header class="work-head">
+      <h1>work</h1>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+    </header>
+    <div id="featured"></div>
+    <div class="archive" id="archiveGrid"></div>
+  </main>
+
+  <script src="projects.js?v=1794769448"></script>
+  <script src="fx.js?v=1794769448" defer></script>
+  <script>
+    const featured = document.getElementById("featured");
+    const archive = document.getElementById("archiveGrid");
+    const filters = document.getElementById("filters");
+    const embed = (p) => p.type === "yt"
+      ? `https://www.youtube.com/embed/${p.vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1`
+      : `https://player.vimeo.com/video/${p.vid}?autoplay=1&playsinline=1`;
+
+    PROJECTS.forEach((p, i) => {
+      const el = document.createElement("article");
+      el.className = "row" + (p.big ? " big" : "") + (p.big && i % 2 ? " flip" : "");
+      el.id = p.id;
+      el.dataset.cat = p.cat;
+      el.innerHTML = `
+        <div class="player"><button type="button" aria-label="Play ${p.title}"><img src="${p.thumb}" alt="" loading="lazy"></button></div>
+        <div class="meta">
+          <p class="venue">${p.venue}</p>
+          <h2>${p.title}</h2>
+          ${p.role ? `<p class="role"><span>role</span>${p.role}</p>` : ""}
+          ${p.about ? `<p class="tag">${p.about}</p>` : ""}
+          ${p.versions ? `<div class="langs">${p.versions.map((v, k) => `<button type="button" data-k="${k}"${k ? "" : ` class="on"`}>${v.label}</button>`).join("")}</div>` : ""}
+        </div>`;
+      const player = el.querySelector(".player");
+      const play = (v) => {
+        player.innerHTML = `<iframe src="${embed(v)}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+      };
+      if (p.type === "image") {
+        player.classList.add("still");
+        player.innerHTML = `<a href="${p.src}" target="_blank" rel="noopener" aria-label="Open ${p.title} full size"><img src="${p.thumb}" alt="${p.title}" loading="lazy"></a>`;
+      } else {
+        player.querySelector("button").addEventListener("click", () => play(p));
+      }
+      el.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => {
+        el.querySelectorAll(".langs button").forEach((x) => x.classList.toggle("on", x === b));
+        play(p.versions[+b.dataset.k]);
+      }));
+      (p.big ? featured : archive).appendChild(el);
+    });
+
+    // filter chips
+    ["all", ...new Set(PROJECTS.map((p) => p.cat))].forEach((c, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "filter" + (i === 0 ? " on" : "");
+      b.textContent = c;
+      b.addEventListener("click", () => {
+        filters.querySelectorAll(".filter").forEach((f) => f.classList.toggle("on", f === b));
+        document.querySelectorAll(".row").forEach((r) => {
+          const show = c === "all" || r.dataset.cat === c;
+          r.classList.toggle("gone", !show);
+          if (show) r.classList.add("in");
+        });
+      });
+      filters.appendChild(b);
+    });
+
+    // arriving from a landing screen: go straight to that project and make it glow
+    function landOnProject() {
+      const target = location.hash && document.getElementById(location.hash.slice(1));
+      if (!target) return;
+      target.classList.add("in", "spot");
+      const go = () => {
+        const y = target.getBoundingClientRect().top + scrollY - Math.max(70, (innerHeight - target.offsetHeight) / 2);
+        scrollTo({ top: y, behavior: "instant" });
+      };
+      go();
+      setTimeout(go, 350);   // again once fonts and images have settled
+      setTimeout(() => target.classList.remove("spot"), 2600);
+    }
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    addEventListener("load", landOnProject);
+  </script>
+</body>
+</html>
