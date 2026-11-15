@@ -2,10 +2,11 @@
 // src: image shown in the grid · more: extra images shown when opened
 // big: true = takes two columns in the grid
 // kind: used for the filter buttons · year and desc are optional
-const QBG_DESC = "A series of flyers designed for a backgammon gathering, reframing a traditionally masculine, diasporic game as soft, social, and contemporary. The visual language blends cultural nostalgia with bold, minimal typography to signal both intimacy and public presence.";
+// side: "pro" = only eveir.me · "social" = only eveir.me/selam · leave out = both
+const QBG_DESC = "A series of flyers designed for a queer backgammon gathering, reframing a traditionally masculine, diasporic game as soft, social, and contemporary. The visual language blends cultural nostalgia with bold, minimal typography to signal both intimacy and public presence.";
 
 window.GRAPHICS = [
-  { title: "Baklava Social Club", kind: "flyers", year: 2026, big: true,
+  { title: "Baklava Social Club", kind: "flyers", year: 2026, big: true, side: "social",
     src: "assets/graphics/baklava-social-club.jpg" },
 
   { title: "NO COMMENT", kind: "branding",
@@ -17,15 +18,15 @@ window.GRAPHICS = [
   { title: "Hot Girls Eat Dolma", kind: "posters",
     src: "assets/graphics/dolma.jpg" },
 
-  { title: `<span class="redact" aria-label="name redacted"></span> Goes West`, kind: "flyers", year: 2026,
-    src: "assets/graphics/goes-west-censored.jpg", desc: QBG_DESC },
+  { title: "Queer Backgammon Goes West", kind: "flyers", year: 2026, side: "social",
+    src: "assets/graphics/goes-west.jpg", desc: QBG_DESC },
 
   { title: "Persepolis Lion", kind: "tattoo", big: true,
     src: "assets/graphics/347890.png",
     more: ["assets/graphics/5c869b.jpeg", "assets/graphics/61be22.jpg"],
     desc: "A reinterpretation of the lion depicted in Persepolis, transforming a politically charged symbol into something personal and gentle. Through simplified line work and subtle symbolic shifts, the design reframes strength as softness. The final illustration was tattooed on the inner forearm, extending graphic research into embodied form." },
 
-  { title: "CUNTRY", kind: "branding",
+  { title: "CUNTRY", kind: "branding", side: "social",
     src: "assets/graphics/96f4cf.jpg", more: ["assets/graphics/f2b8f3.jpg"] },
 
   { title: "Micro Grants for Political Zines", kind: "posters",
@@ -47,3 +48,12 @@ window.GRAPHICS = [
   { title: "Edenseek Publishing", kind: "branding",
     src: "assets/graphics/390ceb.jpg", more: ["assets/graphics/852d21.jpg"] },
 ];
+
+// keep only what belongs on this side, and fix image paths for pages inside /selam/
+window.GRAPHICS = window.GRAPHICS
+  .filter((g) => !g.side || g.side === (window.SIDE || "pro"))
+  .map((g) => ({
+    ...g,
+    src: (window.BASE || "") + g.src,
+    more: g.more && g.more.map((m) => (window.BASE || "") + m),
+  }));

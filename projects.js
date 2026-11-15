@@ -10,6 +10,7 @@
 // thumb   still used on the landing ring and work page
 // versions  several films of one project, shown as switch buttons
 // ring    false keeps a project off the landing ring (e.g. when its only still has text on it)
+// side    "pro" = only eveir.me · "social" = only eveir.me/selam · leave out = both
 const yt = (id, frame = "maxresdefault") => `https://i.ytimg.com/vi/${id}/${frame}.jpg`;
 const vimeoThumb = (t) => `https://i.vimeocdn.com/video/${t}-d_1280x720`;
 
@@ -71,3 +72,12 @@ window.PROJECTS = [
     type: "vimeo", vid: "853842701", ring: false,
     thumb: vimeoThumb("1709520584-88ad9bc2fba6f096d6cccf845ff0782102d0ed9ab99a17fbd2ab3f9bff1b1a08") },
 ];
+
+// keep only what belongs on this side (add side: "pro" or "social" to a project to limit it),
+// and fix local image paths for pages inside /selam/
+window.PROJECTS = window.PROJECTS
+  .filter((p) => !p.side || p.side === (window.SIDE || "pro"))
+  .map((p) => {
+    const fix = (u) => (u && !/^https?:/.test(u) ? (window.BASE || "") + u : u);
+    return { ...p, thumb: fix(p.thumb), src: fix(p.src) };
+  });
