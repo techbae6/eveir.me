@@ -16,9 +16,6 @@ window.GRAPHICS = [
   { title: "NO COMMENT", kind: "branding",
     src: "assets/graphics/8218ed.png", more: ["assets/graphics/003257.png"] },
 
-  { title: "Maşallah", kind: "type", big: true,
-    src: "assets/graphics/masallah.jpg" },
-
   { title: "Hot Girls Eat Dolma", kind: "posters",
     src: "assets/graphics/dolma.jpg" },
 
@@ -32,9 +29,6 @@ window.GRAPHICS = [
 
   { title: "CUNTRY", kind: "branding", side: "social",
     src: "assets/graphics/96f4cf.jpg", more: ["assets/graphics/f2b8f3.jpg"] },
-
-  { title: "Micro Grants for Political Zines", kind: "posters",
-    src: "assets/graphics/political-zines.jpg" },
 
   { title: "integument", kind: "flyers", year: 2025,
     src: "assets/graphics/integument.jpg",

@@ -15,7 +15,7 @@ items.forEach((p, i) => {
   a.href = `work.html#${p.id}`;
   a.setAttribute("aria-label", p.title);
   a.innerHTML = `<img src="${p.thumb}" alt="" draggable="false" loading="eager">
-    <span class="cap"><b>${p.venue}</b><i>${p.title}</i></span>`;
+    <span class="cap"><b>${p.short || p.venue}</b></span>`;
   ring.appendChild(a);
 });
 
@@ -87,7 +87,7 @@ document.addEventListener("pointerleave", () => { px = py = -1; });
     if (hit) {
       const p = items[+hit.dataset.i];
       hit.classList.add("lit");
-      label.innerHTML = `<b>${p.venue}</b><i>${p.title}</i>`;
+      label.innerHTML = `<b>${p.short || p.venue}</b>`;
     }
     label.classList.toggle("on", !!hit);
   }
@@ -106,7 +106,7 @@ let lastFront = -1;
     lastFront = i;
     const p = items[i];
     front.href = `work.html#${p.id}`;
-    front.innerHTML = `<b>${p.venue}</b><i>${p.title}</i>`;
+    front.innerHTML = `<b>${p.short || p.venue}</b>`;
     front.classList.remove("pop"); void front.offsetWidth; front.classList.add("pop");
     ring.querySelectorAll(".panel").forEach((el, k) => el.classList.toggle("facing", k === i));
   }
@@ -149,43 +149,22 @@ if (mail) {
   mail.addEventListener("pointerleave", () => { mail.style.setProperty("--mx", "0px"); mail.style.setProperty("--my", "0px"); });
 }
 
-/* ── entrance word: merhaba → welcome → willkommen ────────── */
-// Each word decodes out of random glyphs, holds, then scrambles into the next,
-// like a signal being tuned in. Clicking the word still enters the site.
+/* ── entrance word: merhaba ↔ welcome ─────────────────────── */
+// A quiet crossfade: the word softens, blurs and drifts up out of view,
+// then the other language settles in. Clicking the word still enters the site.
 (() => {
   const el = document.getElementById("word");
-  if (!el) return;
-  const WORDS = ["merhaba", "welcome", "willkommen"];
-  const GLYPHS = "▓▒░█<>/\\|_=+*#01{}[]";
+  if (!el || reduce) return;
+  const WORDS = ["merhaba", "welcome"];
   let i = 0;
-  const show = (s) => { el.innerHTML = s; };
-  function morph(to, done) {
-    const from = el.textContent;
-    const len = Math.max(from.length, to.length);
-    // each letter settles at its own moment, left to right with a little jitter
-    const settle = [...Array(len)].map((_, k) => 6 + k * 2 + Math.floor(Math.random() * 6));
-    let f = 0;
-    (function tick() {
-      let out = "", doneAll = true;
-      for (let k = 0; k < len; k++) {
-        if (f >= settle[k]) { out += to[k] || ""; continue; }
-        doneAll = false;
-        out += f < settle[k] - 4 && from[k] && Math.random() < 0.35
-          ? from[k]
-          : `<i>${GLYPHS[(Math.random() * GLYPHS.length) | 0]}</i>`;
-      }
-      show(out);
-      f++;
-      if (doneAll) { el.classList.remove("tuning"); done && done(); }
-      else requestAnimationFrame(() => setTimeout(tick, 34));
-    })();
-    el.classList.add("tuning");
-  }
-  if (reduce) return; // keep "merhaba" still for reduced motion
-  (function loop() {
+  setInterval(() => {
+    el.classList.add("out");
     setTimeout(() => {
       i = (i + 1) % WORDS.length;
-      morph(WORDS[i], loop);
-    }, 2400);
-  })();
+      el.textContent = WORDS[i];
+      el.classList.remove("out");
+      el.classList.add("in");
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("in")));
+    }, 700);
+  }, 3600);
 })();

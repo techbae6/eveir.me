@@ -631,3 +631,11 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 @media (max-width: 760px) { .lp-hat { width: 130px; height: 110px; } }
 .lp-hat { width: clamp(220px, 24vw, 340px); height: clamp(170px, 18vw, 260px); margin: -40px -20px -40px 0; }
 @media (max-width: 760px) { .lp-hat { width: 150px; height: 120px; margin: -14px -8px -14px 0; } }
+
+/* entrance word: sleek crossfade */
+.landing .enter { font-size: clamp(3.5rem, 11vw, 9rem); }
+.enter .word { transition: opacity .7s ease, filter .7s ease, transform .9s cubic-bezier(.2,.8,.2,1), letter-spacing .9s cubic-bezier(.2,.8,.2,1); }
+.enter .word.out { opacity: 0; filter: blur(10px); transform: translateY(-12px); letter-spacing: .04em; }
+.enter .word.in { opacity: 0; filter: blur(10px); transform: translateY(12px); letter-spacing: -.12em; transition: none; }
+.enter .word.tuning { animation: none; }
+@media (max-width: 760px) { .landing .enter { font-size: 15vw; } }

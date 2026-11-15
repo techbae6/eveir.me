@@ -8,7 +8,9 @@
 
   /* 1 ─ page transition: the page softly fades and lifts away, the next one fades in */
   document.documentElement.classList.add("entering");
-  requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove("entering")));
+  const arrive = () => document.documentElement.classList.remove("entering");
+  requestAnimationFrame(() => requestAnimationFrame(arrive));
+  setTimeout(arrive, 120); // fallback: background tabs may not deliver animation frames
   addEventListener("pageshow", (e) => { if (e.persisted) document.documentElement.classList.remove("leaving"); });
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[href]");
