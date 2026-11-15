@@ -9,6 +9,10 @@ window.GRAPHICS = [
   { title: "Baklava Social Club", kind: "flyers", year: 2026, big: true, side: "social",
     src: "assets/graphics/baklava-social-club.jpg" },
 
+  { title: "Chosen Family Hat", kind: "merch", year: 2026, side: "social",
+    src: "assets/graphics/hat-front.jpg", more: ["assets/graphics/hat-back.jpg"],
+    desc: "Queer Backgammon's first merch: an embroidered cap to play backgammon in the sun. All profits donated to Black Trans Liberation Kitchen. Back logo illustrated by Eve; front lettering by Danna Feintuch; photos by Dylan Vanessa." },
+
   { title: "NO COMMENT", kind: "branding",
     src: "assets/graphics/8218ed.png", more: ["assets/graphics/003257.png"] },
 
