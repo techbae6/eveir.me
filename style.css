@@ -825,3 +825,6 @@ body:has(.about-panel.open) .ring-flag { opacity: 0; }
 .pl-ctl { display: flex; justify-content: flex-end; margin: 0 0 16px; }
 .qf-after { margin-bottom: 0; }
 .qf { margin-bottom: 26px; }
+/* "unlearning" is a long word: size the heading to the screen so it never spills */
+.qf h2 { font-size: clamp(2.4rem, 9vw, 9rem); }
+@media (max-width: 900px) { .qf h2 { font-size: 11.4vw; } }

@@ -2,7 +2,7 @@
 // 1. "unlock grid": the pieces come loose and float, slow and heavy, nudging each other.
 //    Grab one and throw it; it slides to a stop and stays where it lands. "lock grid" sends
 //    every piece back to its place in the grid.
-// 2. Social site only: the queer backgammon "anti-design" section at the top.
+// 2. Social site only: the queer backgammon "unlearning design" section at the top.
 (() => {
   const wall = document.getElementById("masonry");
   if (!wall) return;
@@ -157,18 +157,18 @@
   wall.addEventListener("pointercancel", drop);
   wall.addEventListener("click", (e) => { if (free && lastMoved > 5) { e.stopPropagation(); e.preventDefault(); lastMoved = 0; } }, true);
 
-  /* ── social site: queer backgammon, "anti-design" ──────────────── */
+  /* ── social site: queer backgammon, "unlearning design" ──────────────── */
   if (window.SIDE === "social" && window.QBG_SERIES) {
     const sec = document.createElement("section");
     sec.className = "qf";
     sec.id = "qbg";
     sec.innerHTML = `
       <p class="qf-kicker">queer backgammon · since spring 2025</p>
-      <h2>anti-<em>design</em></h2>
+      <h2>unlearning <em>design</em></h2>
       <div class="qf-body">
         <div class="qf-text">
-          <p class="qf-lead">Since finishing Ruben Pater’s <em>CAPS LOCK</em> in spring 2025, I’ve been unlearning polish.</p>
-          <p>A lot of what we call “good design” is a taste we were sold: slick, Western, frictionless, made to move product. So I draw by hand, screenshot my notes app, and leave things broken on purpose. In the era of AI, the human and the imperfect feel more valuable than ever.</p>
+          <p class="qf-lead">Since finishing Ruben Pater’s <em>CAPS LOCK</em> in spring 2025, I’ve been taking my own training apart.</p>
+          <p>A lot of what we call “good design” is a taste we were sold: slick, Western, built for convenience, made to move product. So I draw by hand, screenshot my notes app, and leave things broken on purpose. In the era of AI, the human and the imperfect feel more valuable than ever.</p>
           <p>True anti-design probably isn’t possible. Sooner or later, everything gets turned into a look someone can sell. So it’s a direction more than a destination: design for the people in the room, not for the market.</p>
           <p>Queer backgammon is where I push it furthest. Every flyer, zine and sticker below.</p>
           <a class="qf-link" href="https://queerbackgammon.com" target="_blank" rel="noopener">queerbackgammon.com ↗</a>
