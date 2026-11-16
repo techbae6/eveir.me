@@ -1,6 +1,7 @@
 // Your graphic work. Images live in assets/graphics/ and always show uncropped.
 // src: image shown in the grid · more: extra images shown when opened
-// big: true = takes two columns in the grid
+// big: true = takes a 2×2 block in the grid · tiles crop to fill;
+// fit: "contain" = show the whole image on paper instead · pos: crop focus, e.g. "50% 30%"
 // kind: used for the filter buttons · year and desc are optional
 // side: "pro" = only eveir.me · "social" = only eveir.me/selam · leave out = both
 const QBG_DESC = "A series of flyers designed for a queer backgammon gathering, reframing a traditionally masculine, diasporic game as soft, social, and contemporary. The visual language blends cultural nostalgia with bold, minimal typography to signal both intimacy and public presence.";
@@ -10,7 +11,7 @@ window.GRAPHICS = [
     src: "assets/graphics/baklava-social-club.jpg" },
 
   { title: "Chosen Family Hat", kind: "merch", year: 2026, side: "social",
-    src: "assets/graphics/hat-front.jpg", more: ["assets/graphics/hat-back.jpg"],
+    src: "assets/graphics/hat-front.jpg", pos: "45% 50%", more: ["assets/graphics/hat-back.jpg"],
     desc: "Queer Backgammon's first merch: an embroidered cap to play backgammon in the sun. All profits donated to Black Trans Liberation Kitchen. Back logo illustrated by Eve; front lettering by Danna Feintuch; photos by Dylan Vanessa." },
 
   { title: "NO COMMENT", kind: "branding",
@@ -22,7 +23,7 @@ window.GRAPHICS = [
   { title: "Queer Backgammon Goes West", kind: "flyers", year: 2026, side: "social",
     src: "assets/graphics/goes-west.jpg", desc: QBG_DESC },
 
-  { title: "Persepolis Lion", kind: "tattoo", big: true,
+  { title: "Persepolis Lion", kind: "tattoo", big: true, fit: "contain",
     src: "assets/graphics/347890.png",
     more: ["assets/graphics/5c869b.jpeg", "assets/graphics/61be22.jpg"],
     desc: "A reinterpretation of the lion depicted in Persepolis, transforming a politically charged symbol into something personal and gentle. Through simplified line work and subtle symbolic shifts, the design reframes strength as softness. The final illustration was tattooed on the inner forearm, extending graphic research into embodied form." },

@@ -382,8 +382,6 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 @media (hover: hover) { .front-cap { display: none; } }
 @media (hover: none) {
   .panel.facing { outline: 3px solid var(--red); }
-  .panel.facing img { filter: none; mix-blend-mode: normal; }
-  .player.lit img, .g-media.lit img { filter: none; mix-blend-mode: normal; }
   .hint { bottom: 9vh; }
 }
 
@@ -634,7 +632,7 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 
 /* entrance word: sleek crossfade */
 .landing .enter { font-size: clamp(3.5rem, 11vw, 9rem); }
-.enter .word { transition: opacity .7s ease, filter .7s ease, transform .9s cubic-bezier(.2,.8,.2,1), letter-spacing .9s cubic-bezier(.2,.8,.2,1); }
+.enter .word { transition: opacity .32s ease, filter .32s ease, transform .45s cubic-bezier(.2,.8,.2,1), letter-spacing .45s cubic-bezier(.2,.8,.2,1); }
 .enter .word.out { opacity: 0; filter: blur(10px); transform: translateY(-12px); letter-spacing: .04em; }
 .enter .word.in { opacity: 0; filter: blur(10px); transform: translateY(12px); letter-spacing: -.12em; transition: none; }
 .enter .word.tuning { animation: none; }
@@ -642,3 +640,32 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 
 /* the big greeting is decoration: clicks and hovers go through it to the screens behind */
 .landing .enter, .landing .enter * { pointer-events: none; }
+
+/* graphics v4: an even grid of 4:5 tiles; big pieces take a 2×2 block.
+   Images crop to fill their tile so there is no dead space. */
+.gwall { grid-template-columns: repeat(4, 1fr); grid-auto-rows: auto; grid-auto-flow: row dense; gap: 22px; align-items: stretch; }
+.gw-item { display: flex; }
+.gw-item.big { grid-column: span 2; grid-row: span 2; }
+.gw-inner { position: relative; display: flex; flex-direction: column; width: 100%; padding: 0; }
+.gw-item .g-media { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+.gw-item .g-media { flex: 1; }
+.gw-item .g-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gw-item.fit .g-media img { object-fit: contain; padding: 9%; box-sizing: border-box; }
+.gw-item .g-media img { background: #f4f1ea; }
+.gw-cap { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 30px 14px 12px; align-items: flex-end;
+  background: linear-gradient(transparent, rgba(10,17,153,.92)); color: #fff; pointer-events: none; }
+@media (max-width: 1100px) { .gwall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) {
+  .gwall { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .gw-cap { padding: 22px 10px 8px; }
+}
+/* phones: keep every image in the blue duotone, even after a tap */
+@media (hover: none) {
+  .panel img, .panel:hover img, .panel.lit img, .panel.lit:hover img,
+  .player img, .player button:hover img, .player.still img {
+    filter: grayscale(1) contrast(1.3) brightness(.95); mix-blend-mode: screen;
+  }
+  .player.still { background: var(--blue); }
+  .g-media img, .gw-item:hover .g-media img, .g-item:hover .g-media img { filter: url(#duo) contrast(1.1); }
+  .panel.lit { outline: 1px solid rgba(255,255,255,.25); }
+}

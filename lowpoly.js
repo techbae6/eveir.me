@@ -36,94 +36,74 @@
     return g;
   }
 
-  // The queer backgammon "chosen family" cap, modelled on the product photos:
-  // a low, soft six-panel "dad hat" with seams to the top button, eyelets, a long brim
-  // that curves down at the sides with rows of stitching, and a strap with a brass buckle.
+  // The queer backgammon "chosen family" cap: a soft, low six-panel dad hat with a
+  // gently curved brim and the embroidered lettering across the front. Kept simple on
+  // purpose: smooth crown, faint seams, a short brim, no extra hardware.
   function hatGroup() {
-    const MAROON = 0x7a1430, STITCH = 0xc0506e, H = 0.68;
+    const MAROON = 0x5e0f26, STITCH = 0xc25a78, H = 0.8;
     const g = new THREE.Group();
-    const cloth = new THREE.MeshStandardMaterial({ color: MAROON, flatShading: true, roughness: 0.95, metalness: 0, side: THREE.DoubleSide });
-    const thread = new THREE.LineBasicMaterial({ color: STITCH, transparent: true, opacity: 0.75 });
-    const onDome = (phi, th, r = 1.012) => new THREE.Vector3(-Math.cos(phi) * Math.sin(th) * r, Math.cos(th) * r * H, Math.sin(phi) * Math.sin(th) * r);
+    const cloth = new THREE.MeshStandardMaterial({ color: MAROON, roughness: 0.9, metalness: 0, side: THREE.DoubleSide });
+    const thread = new THREE.LineBasicMaterial({ color: STITCH, transparent: true, opacity: 0.45 });
+    const onDome = (phi, th, r = 1.006) => new THREE.Vector3(-Math.cos(phi) * Math.sin(th) * r, Math.cos(th) * r * H, Math.sin(phi) * Math.sin(th) * r);
 
     // crown
-    const crown = new THREE.Mesh(new THREE.SphereGeometry(1, 18, 7, 0, Math.PI * 2, 0, Math.PI / 2), cloth);
+    const crown = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2), cloth);
     crown.scale.y = H;
     g.add(crown);
 
-    // six seams from the button down, one at the centre front
+    // six faint seams to the button, one down the centre front
     for (let k = 0; k < 6; k++) {
       const phi = Math.PI / 2 + (k * Math.PI) / 3, pts = [];
-      for (let t = 0.06; t <= Math.PI / 2 + 0.001; t += Math.PI / 24) pts.push(onDome(phi, t));
+      for (let t = 0.07; t <= Math.PI / 2 + 0.001; t += Math.PI / 32) pts.push(onDome(phi, t));
       g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), thread));
-      // an embroidered eyelet in the middle of each panel
-      const eye = new THREE.Mesh(new THREE.CircleGeometry(0.03, 8), new THREE.MeshBasicMaterial({ color: 0x3a0716 }));
-      const at = onDome(phi + Math.PI / 6, 0.62, 1.016);
-      eye.position.copy(at);
-      eye.lookAt(at.clone().multiplyScalar(2));
-      g.add(eye);
     }
-    // sweatband edge
-    const rim = [];
-    for (let k = 0; k <= 36; k++) rim.push(onDome((k / 36) * Math.PI * 2, Math.PI / 2 - 0.05, 1.015));
-    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(rim), thread));
 
     // top button
-    const button = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 4), cloth);
-    button.position.y = H + 0.015;
+    const button = new THREE.Mesh(new THREE.SphereGeometry(0.075, 12, 6), cloth);
+    button.position.y = H + 0.01;
     g.add(button);
 
-    // brim: drawn flat, then bent down at the tip and the sides
-    const bend = (x, z) => -0.2 * Math.max(0, z - 0.95) - 0.34 * x * x * Math.max(0, z - 0.45);
-    const a0 = 0.16, a1 = Math.PI - 0.16, N = 10;
-    const inner = (t) => { const a = a0 + (a1 - a0) * t; return [-Math.cos(a) * 0.985, Math.sin(a) * 0.985]; };
-    const outer = (t) => { const a = a0 + (a1 - a0) * t; return [-Math.cos(a) * 1.04, Math.sin(a) * 1.95]; };
+    // brim: a short, rounded bill that dips softly at the sides
+    const bend = (x, z) => -0.22 * x * x * Math.max(0, z - 0.4) - 0.08 * Math.max(0, z - 1.1);
+    const a0 = 0.2, a1 = Math.PI - 0.2, N = 24;
+    const inner = (t) => { const a = a0 + (a1 - a0) * t; return [-Math.cos(a) * 0.99, Math.sin(a) * 0.99]; };
+    const outer = (t) => { const a = a0 + (a1 - a0) * t; return [-Math.cos(a) * 1.0, Math.sin(a) * 1.62]; };
     const sh = new THREE.Shape();
     for (let k = 0; k <= N; k++) { const [x, y] = outer(k / N); k ? sh.lineTo(x, y) : sh.moveTo(x, y); }
     for (let k = N; k >= 0; k--) { const [x, y] = inner(k / N); sh.lineTo(x, y); }
-    const brimGeo = new THREE.ExtrudeGeometry(sh, { depth: 0.045, bevelEnabled: false, curveSegments: 1 });
+    const brimGeo = new THREE.ExtrudeGeometry(sh, { depth: 0.04, bevelEnabled: false, curveSegments: 4 });
     brimGeo.rotateX(Math.PI / 2);
     const bp = brimGeo.attributes.position;
     for (let i = 0; i < bp.count; i++) bp.setY(i, bp.getY(i) + bend(bp.getX(i), bp.getZ(i)));
     brimGeo.computeVertexNormals();
     const brim = new THREE.Mesh(brimGeo, cloth);
-    brim.position.y = 0.03;
+    brim.position.y = 0.02;
     g.add(brim);
-    // rows of stitching across the brim
-    for (let r = 1; r <= 6; r++) {
-      const f = 0.18 + r * 0.12, pts = [];
-      for (let k = 0; k <= 24; k++) {
-        const t = k / 24, [xi, zi] = inner(t), [xo, zo] = outer(t);
+    // two rows of stitching along the bill
+    [0.35, 0.7].forEach((f) => {
+      const pts = [];
+      for (let k = 0; k <= 32; k++) {
+        const t = 0.04 + (k / 32) * 0.92, [xi, zi] = inner(t), [xo, zo] = outer(t);
         const x = xi + (xo - xi) * f, z = zi + (zo - zi) * f;
-        pts.push(new THREE.Vector3(x, 0.034 + bend(x, z), z));
+        pts.push(new THREE.Vector3(x, 0.025 + bend(x, z), z));
       }
       g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), thread));
-    }
+    });
 
-    // back strap: a dark opening with a brass buckle
-    const open = new THREE.Mesh(new THREE.CircleGeometry(0.24, 10, 0, Math.PI), new THREE.MeshBasicMaterial({ color: 0x1a0308, side: THREE.DoubleSide }));
-    open.position.set(0, 0.0, -1.0);
-    g.add(open);
-    const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.04), new THREE.MeshStandardMaterial({ color: 0xb8913a, metalness: 0.7, roughness: 0.35, flatShading: true }));
-    buckle.position.set(0.12, 0.06, -1.01);
-    g.add(buckle);
-
-    // embroidery decals on a skin just outside the crown
+    // embroidered lettering across the front panels
     const loader = new THREE.TextureLoader(), base = window.BASE || "";
-    const decal = (file, phi0, phiLen, th0, thLen) => {
-      const geo = new THREE.SphereGeometry(1.014, 24, 12, phi0, phiLen, th0, thLen);
-      const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: loader.load(base + "assets/hat/" + file), transparent: true, depthWrite: false, roughness: 0.8 }));
-      m.scale.y = H;
-      g.add(m);
-    };
-    decal("front.png", Math.PI / 2 - 0.78, 1.56, 0.52, 0.72);      // "QUEER BACKGAMMON" across the front panels
-    decal("back.png", Math.PI * 1.5 - 1.0, 0.42, 0.66, 0.36);      // logo on the back left panel, above the strap
+    const tex = loader.load(base + "assets/hat/front.png");
+    tex.anisotropy = 4;
+    const geo = new THREE.SphereGeometry(1.01, 40, 16, Math.PI / 2 - 0.85, 1.7, 0.42, 0.78);
+    const word = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, transparent: true, depthWrite: false, roughness: 0.7 }));
+    word.scale.y = H;
+    g.add(word);
 
-    g.position.y = -0.38;
-    g.rotation.x = 0.62; // look at it from a little above, like the product photos
+    g.position.y = -0.22;
+    g.rotation.x = 0.5; // seen a little from above, so the brim reads
     const outerGroup = new THREE.Group();
     outerGroup.add(g);
-    outerGroup.scale.setScalar(1.12);
+    outerGroup.scale.setScalar(0.98);
     return outerGroup;
   }
 
@@ -188,7 +168,8 @@
     };
     size(); addEventListener("resize", size);
 
-    let spinY = reduce ? 0 : 0.008, velY = spinY, rx = -0.25, tx = 0, ty = 0, drag = false, lx = 0, ly = 0, velX = 0;
+    const isHat = shape === "hat";
+    let spinY = reduce || isHat ? 0 : 0.008, velY = spinY, rx = -0.25, tx = 0, ty = 0, drag = false, lx = 0, ly = 0, velX = 0;
     canvas.addEventListener("pointerdown", (e) => { drag = true; lx = e.clientX; ly = e.clientY; canvas.setPointerCapture?.(e.pointerId); canvas.classList.add("held"); });
     canvas.addEventListener("pointermove", (e) => {
       if (!drag) return;
@@ -205,7 +186,12 @@
       if (visible) {
         if (!drag) { velY += (spinY - velY) * 0.03; velX *= 0.92; }
         mesh.rotation.y += velY;
-        rx += velX; rx += ((-0.25 + tx) - rx) * 0.04;
+        if (isHat && !drag) {
+          const home = -0.35 + (reduce ? 0 : Math.sin(performance.now() / 1600) * 0.28);
+          const T = Math.PI * 2, off = (((mesh.rotation.y - home + Math.PI) % T) + T) % T - Math.PI;
+          mesh.rotation.y = home + off - off * 0.03; // settle back the short way round
+        }
+        rx += velX; rx += (((isHat ? 0 : -0.25) + tx) - rx) * 0.04;
         mesh.rotation.x = rx;
         mesh.rotation.z += ((ty * 0.3) - mesh.rotation.z) * 0.05;
         renderer.render(scene, camera);

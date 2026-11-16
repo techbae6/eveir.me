@@ -134,7 +134,6 @@
         if (r.bottom < 0 || r.top > innerHeight) return;
         const k = Math.max(-1, Math.min(1, (r.top + r.height / 2 - mid) / mid));
         c.style.transform = `perspective(700px) rotateX(${(k * 10).toFixed(2)}deg) scale(${(1 - Math.abs(k) * 0.04).toFixed(3)})`;
-        c.classList.toggle("lit", Math.abs(k) < 0.35);
       });
       requestAnimationFrame(loop);
     })();

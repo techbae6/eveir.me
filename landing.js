@@ -161,16 +161,20 @@ if (mail) {
 (() => {
   const el = document.getElementById("word");
   if (!el || reduce) return;
-  const WORDS = ["merhaba", "welcome"];
+  // one pass through all three, then rest on merhaba
+  const WORDS = ["merhaba", "welcome", "willkommen", "merhaba"];
   let i = 0;
-  setInterval(() => {
+  const step = () => {
+    if (i >= WORDS.length - 1) return;
     el.classList.add("out");
     setTimeout(() => {
-      i = (i + 1) % WORDS.length;
+      i += 1;
       el.textContent = WORDS[i];
       el.classList.remove("out");
       el.classList.add("in");
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("in")));
-    }, 700);
-  }, 3600);
+      setTimeout(step, 1500);
+    }, 320);
+  };
+  setTimeout(step, 1800);
 })();
