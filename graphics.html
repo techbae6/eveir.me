@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1794852516">
+  <link rel="stylesheet" href="style.css?v=1794853187">
 </head>
 <body class="workpage graphicspage">
   <a class="vname" href="index.html" aria-label="Eve Uygur, home"><span>eve</span><span>uygur</span></a>
@@ -53,10 +53,10 @@
     <button class="lb-nav lb-next" aria-label="Next">›</button>
   </div>
 
-  <script src="graphics.js?v=1794852516"></script>
+  <script src="graphics.js?v=1794853187"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="lowpoly.js?v=1794852516" defer></script>
-  <script src="fx.js?v=1794852516" defer></script>
+  <script src="lowpoly.js?v=1794853187" defer></script>
+  <script src="fx.js?v=1794853187" defer></script>
   <script>
     const grid = document.getElementById("masonry");
     const filters = document.getElementById("filters");
@@ -67,7 +67,7 @@
 
     const plain = (t) => t.replace(/<[^>]+>/g, "").trim();
     const media = (g) => g.src
-      ? `<img src="${g.src}" alt="${plain(g.title)}" loading="lazy"${g.pos ? ` style="object-position:${g.pos}"` : ""}>`
+      ? `<img src="${g.src}" alt="${plain(g.title)}" loading="lazy" style="${g.pos ? `object-position:${g.pos};` : ""}${g.bg ? `background:${g.bg};` : ""}${g.pad !== undefined ? `padding:${g.pad};` : ""}">`
       : `<div class="ph ph-${g.shape || "square"}"><span>${g.title}</span><small>add image in graphics.js</small></div>`;
 
     function render(kind) {
@@ -129,5 +129,6 @@
       if (e.key === "ArrowRight") open(current + 1);
     });
   </script>
+  <script src="play.js?v=1794853187"></script>
 </body>
 </html>

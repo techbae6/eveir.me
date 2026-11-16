@@ -1,7 +1,7 @@
 // Your graphic work. Images live in assets/graphics/ and always show uncropped.
 // src: image shown in the grid · more: extra images shown when opened
 // big: true = takes a 2×2 block in the grid · tiles crop to fill;
-// fit: "contain" = show the whole image on paper instead · pos: crop focus, e.g. "50% 30%"
+// fit: "contain" = show the whole image (bg: colour around it, pad: 0 for no margin) · pos: crop focus, e.g. "50% 30%"
 // kind: used for the filter buttons · year and desc are optional
 // side: "pro" = only eveir.me · "social" = only eveir.me/selam · leave out = both
 const QBG_DESC = "A series of flyers designed for a queer backgammon gathering, reframing a traditionally masculine, diasporic game as soft, social, and contemporary. The visual language blends cultural nostalgia with bold, minimal typography to signal both intimacy and public presence.";
@@ -17,7 +17,7 @@ window.GRAPHICS = [
   { title: "NO COMMENT", kind: "branding",
     src: "assets/graphics/8218ed.png", more: ["assets/graphics/003257.png"] },
 
-  { title: "Hot Girls Eat Dolma", kind: "posters", side: "social",
+  { title: "Hot Girls Eat Dolma", kind: "posters", side: "social", fit: "contain", bg: "#0020f0", pad: 0,
     src: "assets/graphics/dolma.jpg" },
 
   { title: "Queer Backgammon Goes West", kind: "flyers", year: 2026, side: "social",
@@ -47,6 +47,28 @@ window.GRAPHICS = [
   { title: "Edenseek Publishing", kind: "branding",
     src: "assets/graphics/390ceb.jpg", more: ["assets/graphics/852d21.jpg"] },
 ];
+
+// Queer backgammon flyers, zines and stickers: the "on not looking good" section at the
+// top of the social graphics page. Order here = order in the strip.
+window.QBG_SERIES = [
+  { src: "assets/qbg/pride-in-the-park.jpg", label: "pride in the park · 06.20.26" },
+  { src: "assets/qbg/speed-night.jpg", label: "speed backgammon night · the bush" },
+  { src: "assets/qbg/zine-tavla-setup.jpg", label: "zine · tavla setup + etymology", wide: true },
+  { src: "assets/qbg/half-birthday-red.jpg", label: "half birthday · 05.09" },
+  { src: "assets/qbg/bodyhack.jpg", label: "x bodyhack · nowadays · 06.27" },
+  { src: "assets/qbg/chair.jpg", label: "the plastic chair" },
+  { src: "assets/qbg/riis-beach.jpg", label: "riis people’s beach · 07.25.26" },
+  { src: "assets/qbg/takhte-tavla-green.jpg", label: "takhte · tavla · nardi · 04.26" },
+  { src: "assets/graphics/goes-west.jpg", label: "goes west · los angeles" },
+  { src: "assets/qbg/stickers.jpg", label: "stickers · open 2 flirt" },
+  { src: "assets/qbg/boyfriend-0315.jpg", label: "boyfriend co-op · 03.15.26" },
+  { src: "assets/qbg/zine-what-we-served.jpg", label: "zine · what we served", wide: true },
+  { src: "assets/qbg/half-birthday-grey.jpg", label: "half birthday · alt" },
+  { src: "assets/qbg/boyfriend-dec28-blue.jpg", label: "boyfriend co-op · 12.28 · blue" },
+  { src: "assets/qbg/boyfriend-dec28-pink.jpg", label: "boyfriend co-op · 12.28 · pink" },
+  { src: "assets/graphics/baklava-social-club.jpg", label: "baklava social club" },
+  { src: "assets/graphics/hat-front.jpg", label: "chosen family hat" },
+].map((t) => ({ ...t, src: (window.BASE || "") + t.src }));
 
 // keep only what belongs on this side, and fix image paths for pages inside /selam/
 window.GRAPHICS = window.GRAPHICS

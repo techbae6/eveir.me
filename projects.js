@@ -17,6 +17,11 @@ const yt = (id, frame = "maxresdefault") => `https://i.ytimg.com/vi/${id}/${fram
 const vimeoThumb = (t) => `https://i.vimeocdn.com/video/${t}-d_1280x720`;
 
 window.PROJECTS = [
+  { id: "qbg-flyers", short: "On Not Looking Good", title: "On Not Looking Good", venue: "Queer Backgammon · flyers, zines, stickers", cat: "design", big: true, side: "social",
+    role: "Founder · design, illustration, print",
+    about: "An ongoing experiment in making graphic design less designed, for queer backgammon nights in Brooklyn: notes-app screenshots, drawing by hand, and flyers that are broken on purpose.",
+    type: "image", src: "assets/qbg/pride-in-the-park.jpg", thumb: "assets/qbg/pride-in-the-park.jpg", url: "graphics.html#qbg" },
+
   { id: "jericho", short: "Iniko — Jericho", title: "Iniko — Jericho", venue: "Sony Innovation Studios", cat: "virtual production", big: true,
     role: "Virtual production lead · 3D environment & experience design · real-time scene operation",
     about: "Official music video shot on the LED volume at Sony Innovation Studios. Led the real-time side of the production: designing the 3D environments and the on-set experience, and operating the scenes live during the shoot.",
