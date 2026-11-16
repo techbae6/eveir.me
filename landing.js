@@ -19,11 +19,22 @@ items.forEach((p, i) => {
   ring.appendChild(a);
 });
 
+// each screen's title is a little 3D tag floating in front of it, turning with the ring
+const tags = items.map((p) => {
+  const t = document.createElement("div");
+  t.className = "ring-tag";
+  t.setAttribute("aria-hidden", "true");
+  t.innerHTML = `<b>${p.short || p.venue}</b>`;
+  ring.appendChild(t);
+  return t;
+});
+
 function layout() {
   const w = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--panel-w"));
   const r = w / (2 * Math.tan(Math.PI / n)) + 6;
   ring.querySelectorAll(".panel").forEach((p, i) => {
     p.style.transform = `rotateY(${(360 / n) * i}deg) translateZ(${r}px)`;
+    tags[i].style.setProperty("--t", `rotateY(${(360 / n) * i}deg) translateZ(${r}px)`);
   });
 }
 layout();
@@ -81,6 +92,7 @@ document.addEventListener("pointerleave", () => { px = py = -1; });
   const hit = px < 0 || dragging || touch ? null : document.elementFromPoint(px, py)?.closest(".panel");
   ring.querySelectorAll(".panel.lit").forEach((el) => el !== hit && el.classList.remove("lit"));
   if (hit) hit.classList.add("lit");
+  if (!touch) tags.forEach((t, k) => t.classList.toggle("on", !!hit && +hit.dataset.i === k));
   requestAnimationFrame(track);
 })();
 
@@ -92,6 +104,7 @@ let lastFront = -1;
   if (i !== lastFront) {
     lastFront = i;
     ring.querySelectorAll(".panel").forEach((el, k) => el.classList.toggle("facing", k === i));
+    if (touch) tags.forEach((t, k) => t.classList.toggle("on", k === i));
   }
   requestAnimationFrame(faceTrack);
 })();

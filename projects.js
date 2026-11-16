@@ -57,7 +57,7 @@ window.PROJECTS = [
 
   { id: "qbg-flyers", short: "Less Designed", title: "Less Designed", venue: "Queer Backgammon · anti-design, 2025–", cat: "design", big: true, side: "social",
     role: "Founder · design, illustration, print",
-    about: "The rule I have designed by since spring 2025: stop trying to make it look good. Flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose.",
+    about: "What I have been practicing since spring 2025: unlearning polish. Flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose.",
     type: "image", src: "assets/qbg/pride-in-the-park.jpg", thumb: "assets/qbg/pride-in-the-park.jpg", url: "graphics.html#qbg" },
 
   { id: "contrasts", short: "Contrasts", title: "Photo essay on immigration and queerness", venue: "Contrasts · forthcoming", cat: "photography", side: "social", ring: false,

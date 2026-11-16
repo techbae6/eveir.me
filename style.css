@@ -810,3 +810,18 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
   .qf-item img { height: 300px; }
   .qf-after { margin-top: 44px; }
 }
+
+/* =========  round 7  ========= */
+/* home: the title is a 3D tag floating just in front of the screen, turning with the ring */
+.panel .cap { display: none !important; }
+.ring-tag { position: absolute; left: -12px; bottom: -16px; z-index: 3; pointer-events: none; white-space: nowrap;
+  background: var(--red); padding: 9px 13px 10px; box-shadow: 6px 6px 0 #0a1199; backface-visibility: hidden;
+  transform: var(--t) translateZ(0px) rotate(-2deg) scale(.85); opacity: 0;
+  transition: opacity .2s, transform .35s cubic-bezier(.3,1.6,.5,1); }
+.ring-tag b { display: block; font: 800 clamp(15px, 1.7vw, 22px)/1 var(--display); letter-spacing: -.02em; text-transform: uppercase; color: #fff; }
+.ring-tag.on { opacity: 1; transform: var(--t) translateZ(46px) rotate(-2deg); }
+@media (max-width: 760px) { .ring-tag { padding: 6px 9px 7px; box-shadow: 4px 4px 0 #0a1199; left: -6px; bottom: -12px; } .ring-tag b { font-size: 13px; } }
+/* graphics: the lock sits right above the grid it unlocks, on the right */
+.pl-ctl { display: flex; justify-content: flex-end; margin: 0 0 16px; }
+.qf-after { margin-bottom: 0; }
+.qf { margin-bottom: 26px; }
