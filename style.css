@@ -669,3 +669,8 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
   .g-media img, .gw-item:hover .g-media img, .g-item:hover .g-media img { filter: url(#duo) contrast(1.1); }
   .panel.lit { outline: 1px solid rgba(255,255,255,.25); }
 }
+
+/* greeting v3: a quick, clean slide-up swap (no blur) */
+.enter .word { transition: opacity .24s cubic-bezier(.4,0,.2,1), transform .34s cubic-bezier(.2,.8,.2,1); filter: none; letter-spacing: inherit; }
+.enter .word.out { opacity: 0; transform: translateY(-.28em); filter: none; letter-spacing: inherit; }
+.enter .word.in { opacity: 0; transform: translateY(.28em); filter: none; letter-spacing: inherit; transition: none; }

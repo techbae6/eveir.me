@@ -143,7 +143,7 @@ if (mail) {
     try { await navigator.clipboard.writeText(addr); hint.textContent = "copied ✓"; }
     catch { location.href = "mailto:" + addr; return; }
     mail.classList.add("done");
-    setTimeout(() => { hint.textContent = "click to copy"; mail.classList.remove("done"); }, 1800);
+    setTimeout(() => { hint.textContent = ""; mail.classList.remove("done"); }, 1800);
   });
   // the address leans toward the cursor while you hover it
   mail.addEventListener("pointermove", (e) => {
@@ -173,8 +173,8 @@ if (mail) {
       el.classList.remove("out");
       el.classList.add("in");
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("in")));
-      setTimeout(step, 1500);
-    }, 320);
+      setTimeout(step, 1000);
+    }, 240);
   };
-  setTimeout(step, 1800);
+  setTimeout(step, 1300);
 })();

@@ -108,8 +108,8 @@
     };
 
     const twill = twillTexture();
-    const CLOTH = 0x7f1c38; // a shade under the photo average, since the lights add some back
-    const cloth = new THREE.MeshStandardMaterial({ color: lin(CLOTH), bumpMap: twill, bumpScale: 0.004, roughness: 0.92, metalness: 0 });
+    const CLOTH = 0x8a1a3c; // a shade under the photo average, since the lights add some back
+    const cloth = new THREE.MeshStandardMaterial({ color: lin(CLOTH), bumpMap: twill, bumpScale: 0.004, roughness: 1, metalness: 0 });
     const lining = new THREE.MeshStandardMaterial({ color: lin(0x5a1229), roughness: 1, side: THREE.BackSide });
     const stitch = new THREE.LineBasicMaterial({ color: lin(0xb0536c), transparent: true, opacity: 0.6 });
 
@@ -156,14 +156,14 @@
     g.add(button);
 
     // brim: pre-curved bill. Top and bottom surfaces plus a rolled edge.
-    const A0 = 0.12 * Math.PI, A1 = 0.88 * Math.PI, NB = 64, MB = 12, TH = 0.03;
+    const A0 = 0.12 * Math.PI, A1 = 0.88 * Math.PI, NB = 64, MB = 12, TH = 0.022;
     const bump = (a) => Math.pow(Math.max(0, Math.sin(((a - A0) / (A1 - A0)) * Math.PI)), 0.55);
     const brimPt = (a, f, dy = 0) => {
       const b = bump(a);
       const ix = -Math.cos(a) * RX * 0.975, iz = Math.sin(a) * RZ * 0.975;
       const ox = -Math.cos(a) * RX * (1 + 0.05 * b), oz = Math.sin(a) * RZ + 0.82 * b;
       const x = ix + (ox - ix) * f, z = iz + (oz - iz) * f;
-      return V(x, 0.012 - 0.46 * x * x * Math.pow(f, 1.15) - 0.06 * f * b + dy, z);
+      return V(x, 0.012 - (0.34 * x * x + 0.05) * f * f * b + dy, z); // curves down smoothly toward the edge, flat where it meets the crown
     };
     const brimMat = cloth.clone();
     brimMat.side = THREE.DoubleSide;
@@ -252,11 +252,11 @@
     if (shape === "hat") {
       // neutral daylight so the cap keeps its real colours
       renderer.outputEncoding = THREE.sRGBEncoding;
-      scene.add(new THREE.HemisphereLight(0xfff6ee, 0x2a2430, 0.5));
-      const sun = new THREE.DirectionalLight(0xfff4e8, 1.0);
+      scene.add(new THREE.HemisphereLight(0xfff8f0, 0x2a1418, 0.36));
+      const sun = new THREE.DirectionalLight(0xfff4e8, 1.12);
       sun.position.set(-2.5, 3.5, 4);
       scene.add(sun);
-      const fill = new THREE.DirectionalLight(0xe8eeff, 0.15);
+      const fill = new THREE.DirectionalLight(0xfff0ea, 0.15);
       fill.position.set(3, 1, 2);
       scene.add(fill);
     } else {
