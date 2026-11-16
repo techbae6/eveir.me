@@ -60,10 +60,10 @@ window.PROJECTS = [
     about: "What I have been practicing since spring 2025: unlearning polish. Flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose.",
     type: "image", src: "assets/qbg/pride-in-the-park.jpg", thumb: "assets/qbg/pride-in-the-park.jpg", url: "graphics.html#qbg" },
 
-  { id: "contrasts", short: "Contrasts", title: "Photo essay on immigration and queerness", venue: "Contrasts · forthcoming", cat: "photography", side: "social", ring: false,
+  { id: "contrasts", short: "Contrasts", title: "Photo essay on immigration and queerness", venue: "Contrasts · forthcoming", cat: "photography", side: "social",
     role: "Photography",
     about: "A photo essay on immigration and queerness, forthcoming in Contrasts.",
-    type: "image", soon: "Contrasts", url: "https://contrastsmag.net/" },
+    type: "image", src: "assets/work/contrasts.jpg", thumb: "assets/work/contrasts.jpg", url: "https://contrastsmag.net/" },
 
   { id: "cern", short: "CERN Collide 2026", title: "unresolved events", venue: "Collide 2026 · CERN", cat: "art", big: true,
     role: "Concept, research & art direction",
