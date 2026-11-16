@@ -18,6 +18,10 @@ def social(s):
     # tell the data files which side this is; keep it out of search engines
     s = s.replace('<meta name="viewport"',
                   '<meta name="robots" content="noindex, nofollow">\n  <script>window.SIDE = "social"; window.BASE = "../";</script>\n  <meta name="viewport"', 1)
+    # professional-only bits (Duolingo etc.) are wrapped in <!--pro--> ... <!--/pro-->
+    s = re.sub(r"<!--pro-->.*?<!--/pro-->", "", s, flags=re.S)
+    s = s.replace("creative technologist at Duolingo. Technical art and art direction, New York.",
+                  "creative technology, technical art and art direction. New York.")
     # social-only touches
     s = s.replace('data-shape="star"', 'data-shape="hat"').replace('class="lowpoly lp-star"', 'class="lowpoly lp-star lp-hat"')
     return s
