@@ -19,7 +19,6 @@ def social(s):
     s = s.replace('<meta name="viewport"',
                   '<meta name="robots" content="noindex, nofollow">\n  <script>window.SIDE = "social"; window.BASE = "../";</script>\n  <meta name="viewport"', 1)
     # social-only touches
-    s = s.replace('<div><dt>speaks</dt>', '<div><dt>also</dt><dd>hosts queer backgammon, nyc</dd></div>\n      <div><dt>speaks</dt>')
     s = s.replace('data-shape="star"', 'data-shape="hat"').replace('class="lowpoly lp-star"', 'class="lowpoly lp-star lp-hat"')
     return s
 
