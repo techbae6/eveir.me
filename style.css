@@ -694,3 +694,7 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 .p-next .arr { font: 400 clamp(2rem, 6vw, 5rem) var(--sans); transition: transform .35s cubic-bezier(.2,.8,.2,1); margin-left: auto; }
 .p-next:hover .arr { transform: translateX(14px); color: var(--red); }
 @media (min-width: 1101px) { main.work { padding-right: 190px; } }
+
+/* graphics grid: each piece shows its own colours on hover (and while pressed on phones) */
+.gw-item:hover .g-media img, .gw-item:focus-visible .g-media img { filter: none; }
+.gw-item.pressed .g-media img { filter: none; }
