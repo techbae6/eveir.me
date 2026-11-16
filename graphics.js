@@ -17,7 +17,7 @@ window.GRAPHICS = [
   { title: "NO COMMENT", kind: "branding",
     src: "assets/graphics/8218ed.png", more: ["assets/graphics/003257.png"] },
 
-  { title: "Hot Girls Eat Dolma", kind: "posters",
+  { title: "Hot Girls Eat Dolma", kind: "posters", side: "social",
     src: "assets/graphics/dolma.jpg" },
 
   { title: "Queer Backgammon Goes West", kind: "flyers", year: 2026, side: "social",
