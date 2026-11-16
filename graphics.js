@@ -25,7 +25,7 @@ window.GRAPHICS = [
 
   { title: "Persepolis Lion", kind: "tattoo", big: true, fit: "contain",
     src: "assets/graphics/347890.png",
-    more: ["assets/graphics/5c869b.jpeg", "assets/graphics/61be22.jpg"],
+    more: ["assets/graphics/61be22.jpg"],
     desc: "A reinterpretation of the lion depicted in Persepolis, transforming a politically charged symbol into something personal and gentle. Through simplified line work and subtle symbolic shifts, the design reframes strength as softness. The final illustration was tattooed on the inner forearm, extending graphic research into embodied form." },
 
   { title: "CUNTRY", kind: "branding", side: "social",
@@ -41,7 +41,7 @@ window.GRAPHICS = [
   { title: "Bettraum", kind: "branding",
     src: "assets/graphics/7ba4d7.png", more: ["assets/graphics/7295e7.png"] },
 
-  { title: "The People's Gummy", kind: "branding",
+  { title: "Edible branding", kind: "branding",
     src: "assets/graphics/970666.jpg", more: ["assets/graphics/c717de.png"] },
 
   { title: "Edenseek Publishing", kind: "branding",
