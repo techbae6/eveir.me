@@ -55,7 +55,7 @@ window.PROJECTS = [
     type: "image", src: "assets/work/queer-backgammon-site.jpg", thumb: "assets/work/queer-backgammon-site.jpg",
     url: "https://queerbackgammon.com" },
 
-  { id: "qbg-flyers", short: "On Not Looking Good", title: "On Not Looking Good", venue: "Queer Backgammon · anti-design, 2025–", cat: "design", big: true, side: "social",
+  { id: "qbg-flyers", short: "Less Designed", title: "Less Designed", venue: "Queer Backgammon · anti-design, 2025–", cat: "design", big: true, side: "social",
     role: "Founder · design, illustration, print",
     about: "The rule I have designed by since spring 2025: stop trying to make it look good. Flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose.",
     type: "image", src: "assets/qbg/pride-in-the-park.jpg", thumb: "assets/qbg/pride-in-the-park.jpg", url: "graphics.html#qbg" },

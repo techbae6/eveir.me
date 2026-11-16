@@ -2,7 +2,7 @@
 // 1. "unlock grid": the pieces come loose and drift slowly around, a bit chaotic. Grab one
 //    and fling it; a piece you put down stays where you left it. "lock" glides them home.
 // 2. "shuffle": deals the grid in a new order (or tosses everything when it's unlocked).
-// 3. Social site only: the queer backgammon "on not looking good" section at the top.
+// 3. Social site only: the queer backgammon "less designed" section at the top.
 (() => {
   const wall = document.getElementById("masonry");
   if (!wall) return;
@@ -139,14 +139,14 @@
   wall.addEventListener("pointercancel", drop);
   wall.addEventListener("click", (e) => { if (free && lastMoved > 5) { e.stopPropagation(); e.preventDefault(); lastMoved = 0; } }, true);
 
-  /* ── social site: queer backgammon, "on not looking good" ──────────────── */
+  /* ── social site: queer backgammon, "less designed" ──────────────── */
   if (window.SIDE === "social" && window.QBG_SERIES) {
     const sec = document.createElement("section");
     sec.className = "qf";
     sec.id = "qbg";
     sec.innerHTML = `
       <p class="qf-kicker">an anti-design practice · since spring 2025</p>
-      <h2>on not looking <em>good</em></h2>
+      <h2>less <em>designed</em></h2>
       <div class="qf-body">
         <div class="qf-text">
           <p class="qf-lead">Since finishing Ruben Pater’s <em>CAPS LOCK</em> in spring 2025, I’ve worked by one rule: stop trying to make it look good.</p>
