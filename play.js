@@ -145,16 +145,26 @@
     sec.className = "qf";
     sec.id = "qbg";
     sec.innerHTML = `
-      <div class="qf-text">
-        <p class="qf-kicker">queer backgammon · 2025–26</p>
-        <h2>on not looking good</h2>
-        <p>The queer backgammon flyers are an ongoing experiment in making graphic design less <em>designed</em>. Reading Ruben Pater’s <em>CAPS LOCK</em> made me ask how much of “good design” is a taste we were sold: polished, Western, frictionless.</p>
-        <p>So some of these are a screenshot of my notes app, a lot of them are drawn by hand, and some are broken on purpose. In the era of AI, the human and the imperfect feel more valuable than ever. That’s the goal.</p>
-        <a class="qf-link" href="https://queerbackgammon.com" target="_blank" rel="noopener">queerbackgammon.com ↗</a>
+      <p class="qf-kicker">an anti-design practice · since spring 2025</p>
+      <h2>on not looking <em>good</em></h2>
+      <div class="qf-body">
+        <div class="qf-text">
+          <p class="qf-lead">Since finishing Ruben Pater’s <em>CAPS LOCK</em> in spring 2025, I’ve worked by one rule: stop trying to make it look good.</p>
+          <p>So much of what we call “good design” is a taste we were sold: polished, Western, frictionless. So I draw by hand, screenshot my notes app, and leave things broken on purpose. In the era of AI, the human and the imperfect feel more valuable than ever.</p>
+          <p>Queer backgammon is where I push it furthest. Every flyer, zine and sticker below.</p>
+          <a class="qf-link" href="https://queerbackgammon.com" target="_blank" rel="noopener">queerbackgammon.com ↗</a>
+        </div>
+        <ol class="qf-rules">
+          <li>draw it by hand</li>
+          <li>a screenshot is a layout</li>
+          <li>leave it a little broken</li>
+          <li>make it for the room, not the feed</li>
+        </ol>
       </div>
       <div class="qf-strip" tabindex="0" aria-label="Queer backgammon flyers, scroll sideways">
         ${QBG_SERIES.map((t, k) => `<figure class="qf-item"><button type="button" aria-label="Open ${t.label}"><img src="${t.src}" alt="${t.label}" loading="lazy" draggable="false"></button><figcaption>QB-${String(k + 1).padStart(2, "0")} · ${t.label}</figcaption></figure>`).join("")}
-      </div>`;
+      </div>
+      <p class="qf-after">everything else <span>↓</span></p>`;
     const anchor = document.querySelector(".g-head");
     anchor.parentNode.insertBefore(sec, anchor.nextSibling);
 

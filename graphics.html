@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1794866641">
+  <link rel="stylesheet" href="style.css?v=1794867393">
 </head>
 <body class="workpage graphicspage">
   <a class="vname" href="index.html" aria-label="Eve Uygur, home"><span>eve</span><span>uygur</span></a>
@@ -35,6 +35,7 @@
     <header class="g-head">
       <div class="g-head-text">
         <h1>graphics</h1>
+        <p class="g-sub">identities, flyers, posters, merch and the odd tattoo.</p>
         <nav class="g-filters" id="filters" aria-label="Filter graphics"></nav>
       </div>
       <canvas class="lowpoly lp-star" data-shape="star" aria-hidden="true"></canvas>
@@ -53,10 +54,10 @@
     <button class="lb-nav lb-next" aria-label="Next">›</button>
   </div>
 
-  <script src="graphics.js?v=1794866641"></script>
+  <script src="graphics.js?v=1794867393"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="lowpoly.js?v=1794866641" defer></script>
-  <script src="fx.js?v=1794866641" defer></script>
+  <script src="lowpoly.js?v=1794867393" defer></script>
+  <script src="fx.js?v=1794867393" defer></script>
   <script>
     const grid = document.getElementById("masonry");
     const filters = document.getElementById("filters");
@@ -78,8 +79,9 @@
         b.className = "gw-item" + (g.big ? " big" : "") + (g.fit === "contain" ? " fit" : "");
         b.type = "button";
         b.setAttribute("aria-label", `${plain(g.title)}, ${g.kind}`);
-        b.innerHTML = `<div class="gw-inner"><div class="g-media">${media(g)}</div>
-          <p class="gw-cap"><b>${g.title}</b><span>${g.kind}${g.year ? " · " + g.year : ""}${g.more ? " · +" + g.more.length : ""}</span></p></div>`;
+        const no = "G-" + String(GRAPHICS.indexOf(g) + 1).padStart(2, "0");
+        b.innerHTML = `<div class="gw-inner"><div class="g-media">${media(g)}${g.more ? `<span class="gw-more">+${g.more.length}</span>` : ""}</div>
+          <p class="gw-cap"><b>${g.title}</b><span>${no} · ${g.kind}${g.year ? " · " + g.year : ""}</span></p></div>`;
         b.addEventListener("click", () => open(i));
         grid.appendChild(b);
       });
@@ -96,7 +98,8 @@
       const c = document.createElement("button");
       c.type = "button";
       c.className = "gf" + (i === 0 ? " on" : "");
-      c.textContent = k;
+      const count = k === "all" ? GRAPHICS.length : GRAPHICS.filter((g) => g.kind === k).length;
+      c.innerHTML = `${k}<sup>${count}</sup>`;
       c.addEventListener("click", () => {
         filters.querySelectorAll(".gf").forEach((f) => f.classList.toggle("on", f === c));
         render(k);
@@ -113,7 +116,7 @@
         ? all.map((src) => `<img src="${src}" alt="${plain(g.title)}">`).join("")
         : media(g);
       lbMedia.scrollLeft = 0;
-      lbCap.innerHTML = `<b>${g.title}</b> — ${g.kind}${g.year ? ", " + g.year : ""}${g.desc ? `<span class="lb-desc">${g.desc}</span>` : ""}`;
+      lbCap.innerHTML = `<span class="lb-count">${current + 1} / ${visible.length}</span><b>${g.title}</b> — ${g.kind}${g.year ? ", " + g.year : ""}${g.desc ? `<span class="lb-desc">${g.desc}</span>` : ""}`;
       lb.classList.add("open");
       lb.setAttribute("aria-hidden", "false");
     }
@@ -129,6 +132,6 @@
       if (e.key === "ArrowRight") open(current + 1);
     });
   </script>
-  <script src="play.js?v=1794866641"></script>
+  <script src="play.js?v=1794867393"></script>
 </body>
 </html>

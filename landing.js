@@ -72,48 +72,25 @@ addEventListener("pointermove", (e) => {
   if (!dragging) targetTilt = -8 + ((e.clientY / innerHeight) - 0.5) * -10;
 });
 
-/* ── label next to the cursor (desktop) ───────────────────── */
+/* ── hovered screen lights up and shows its own title (desktop) ── */
 // The ring keeps turning under a still cursor, so re-check every frame.
-const label = document.createElement("div");
-label.className = "ring-label";
-label.setAttribute("aria-hidden", "true");
-document.body.appendChild(label);
-let px = -1, py = -1, shown = null;
-addEventListener("pointermove", (e) => {
-  px = e.clientX; py = e.clientY;
-  label.style.left = px + "px";
-  label.style.top = py + "px";
-});
+let px = -1, py = -1;
+addEventListener("pointermove", (e) => { px = e.clientX; py = e.clientY; });
 document.addEventListener("pointerleave", () => { px = py = -1; });
 (function track() {
   const hit = px < 0 || dragging || touch ? null : document.elementFromPoint(px, py)?.closest(".panel");
   ring.querySelectorAll(".panel.lit").forEach((el) => el !== hit && el.classList.remove("lit"));
-  if (hit !== shown) {
-    shown = hit;
-    if (hit) {
-      const p = items[+hit.dataset.i];
-      hit.classList.add("lit");
-      label.innerHTML = `<b>${p.short || p.venue}</b>`;
-    }
-    label.classList.toggle("on", !!hit);
-  }
+  if (hit) hit.classList.add("lit");
   requestAnimationFrame(track);
 })();
 
-/* ── phones: name the screen facing you ───────────────────── */
-const front = document.createElement("a");
-front.className = "front-cap";
-document.getElementById("stage").appendChild(front);
+/* ── phones: the screen facing you shows its title ─────────── */
 let lastFront = -1;
 (function faceTrack() {
   const step = 360 / n;
   const i = (((Math.round(-angle / step)) % n) + n) % n;
   if (i !== lastFront) {
     lastFront = i;
-    const p = items[i];
-    front.href = `work.html#${p.id}`;
-    front.innerHTML = `<b>${p.short || p.venue}</b>`;
-    front.classList.remove("pop"); void front.offsetWidth; front.classList.add("pop");
     ring.querySelectorAll(".panel").forEach((el, k) => el.classList.toggle("facing", k === i));
   }
   requestAnimationFrame(faceTrack);
