@@ -674,3 +674,23 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 .enter .word { transition: opacity .24s cubic-bezier(.4,0,.2,1), transform .34s cubic-bezier(.2,.8,.2,1); filter: none; letter-spacing: inherit; }
 .enter .word.out { opacity: 0; transform: translateY(-.28em); filter: none; letter-spacing: inherit; }
 .enter .word.in { opacity: 0; transform: translateY(.28em); filter: none; letter-spacing: inherit; transition: none; }
+
+/* project index rail (work) and the big "next" link at the end of pages */
+.p-rail { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 20; display: grid; gap: 6px; }
+.p-rail a { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; color: #fff; text-decoration: none; opacity: .45; transition: opacity .25s, transform .25s; }
+.p-rail a i { font: italic 14px var(--serif); }
+.p-rail a span { font: 600 12px var(--sans); max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .35s cubic-bezier(.2,.8,.2,1); }
+.p-rail a.on { opacity: 1; }
+.p-rail a.on i { color: var(--red); }
+.p-rail:hover a span, .p-rail a.on span { max-width: 220px; }
+.p-rail a:hover { opacity: 1; transform: translateX(-3px); }
+@media (max-width: 1100px) { .p-rail { display: none; } }
+
+.p-next { display: flex; align-items: baseline; gap: 18px; margin: 120px 0 20px; color: #fff; text-decoration: none; border-top: 1px solid rgba(255,255,255,.3); padding-top: 28px; }
+.p-next small { font: italic 18px var(--serif); opacity: .8; }
+.p-next .w { font: 800 clamp(3rem, 10vw, 9rem)/.9 var(--display, var(--sans)); letter-spacing: -.04em; }
+.p-next .w span { display: inline-block; transition: transform .35s cubic-bezier(.3,1.6,.5,1), color .2s; }
+.p-next:hover .w span { animation: wave .7s cubic-bezier(.3,1.6,.5,1) calc(var(--i) * 45ms) both; color: var(--red); }
+.p-next .arr { font: 400 clamp(2rem, 6vw, 5rem) var(--sans); transition: transform .35s cubic-bezier(.2,.8,.2,1); margin-left: auto; }
+.p-next:hover .arr { transform: translateX(14px); color: var(--red); }
+@media (min-width: 1101px) { main.work { padding-right: 190px; } }

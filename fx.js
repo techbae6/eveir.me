@@ -140,3 +140,58 @@
   }
 })();
 
+
+
+/* 9 ─ scroll-to-spin on home, project index on work, and a big "next" link at the end of pages */
+(() => {
+  const page = document.body.classList.contains("landing") ? "home"
+    : document.querySelector(".gwall") ? "graphics"
+    : document.getElementById("featured") ? "work" : "";
+
+  /* 1 ─ home: spin the ring with the scroll wheel / trackpad and the arrow keys */
+  if (page === "home" && typeof vel !== "undefined") {
+    addEventListener("wheel", (e) => {
+      if (document.getElementById("about")?.getAttribute("aria-hidden") === "false") return;
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      vel = Math.max(-9, Math.min(9, vel - d * 0.035));
+    }, { passive: true });
+    addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") vel = 5;
+      if (e.key === "ArrowRight") vel = -5;
+    });
+    const hint = document.querySelector(".hint");
+    if (hint && !matchMedia("(hover: none)").matches) hint.textContent = "drag or scroll to spin · click a screen";
+  }
+
+  /* 2 ─ work: a numbered index that follows you down the page */
+  if (page === "work") {
+    const rows = [...document.querySelectorAll("#featured .row")];
+    const rail = document.createElement("nav");
+    rail.className = "p-rail";
+    rail.setAttribute("aria-label", "Projects");
+    rail.innerHTML = rows.map((r, i) => {
+      const p = PROJECTS.find((x) => x.id === r.id);
+      return `<a href="#${r.id}"><i>${String(i + 1).padStart(2, "0")}</i><span>${p.short || p.title}</span></a>`;
+    }).join("");
+    document.body.appendChild(rail);
+    const links = [...rail.querySelectorAll("a")];
+    const spy = new IntersectionObserver((ents) => ents.forEach((en) => {
+      if (en.isIntersecting) links.forEach((l) => l.classList.toggle("on", l.getAttribute("href") === "#" + en.target.id));
+    }), { rootMargin: "-45% 0px -50% 0px" });
+    rows.forEach((r) => spy.observe(r));
+    links.forEach((l) => l.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector(l.getAttribute("href")).scrollIntoView({ behavior: "smooth", block: "center" });
+    }));
+  }
+
+  /* 3 ─ a big "next" link at the end of each page, so you never hit a dead end */
+  const next = { work: ["graphics", "graphics.html"], graphics: ["about", "index.html#about"] }[page];
+  if (next) {
+    const a = document.createElement("a");
+    a.className = "p-next";
+    a.href = next[1];
+    a.innerHTML = `<small>next</small><span class="w">${[...next[0]].map((ch, i) => `<span style="--i:${i}">${ch === " " ? "&nbsp;" : ch}</span>`).join("")}</span><span class="arr">→</span>`;
+    document.querySelector("main").appendChild(a);
+  }
+})();
