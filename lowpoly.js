@@ -100,10 +100,10 @@
       const k = angTo(phi, Math.PI / 2) / (Math.PI / 3);            // panel coordinate
       const ds = Math.abs(k - Math.round(k)) * (Math.PI / 3);       // angle to nearest seam
       const seam = Math.exp(-((ds / 0.035) ** 2));
-      const puff = 1 + 0.028 * (1 - Math.cos(Math.min(1, ds / (Math.PI / 6)) * Math.PI)) / 2 * Math.sin(2 * t);
+      const puff = 1 + 0.035 * (1 - Math.cos(Math.min(1, ds / (Math.PI / 6)) * Math.PI)) / 2 * Math.sin(2 * t);
       const press = 1 - 0.01 * seam * Math.sin(t);
-      const r = Math.pow(s, 0.85) * puff * press + off;
-      const y = H * (1 + 0.07 * Math.sin(phi) * s) * Math.pow(c, 0.95) * puff * press + off * c;
+      const r = Math.pow(s, 0.97) * puff * press + off;
+      const y = H * (1 + 0.07 * Math.sin(phi) * s) * Math.pow(c, 1.08) * puff * press + off * c;
       return V(-Math.cos(phi) * RX * r, y, Math.sin(phi) * RZ * r);
     };
 
@@ -163,7 +163,7 @@
       const ix = -Math.cos(a) * RX * 0.975, iz = Math.sin(a) * RZ * 0.975;
       const ox = -Math.cos(a) * RX * (1 + 0.05 * b), oz = Math.sin(a) * RZ + 0.82 * b;
       const x = ix + (ox - ix) * f, z = iz + (oz - iz) * f;
-      return V(x, 0.012 - 0.3 * x * x * Math.pow(f, 1.2) - 0.05 * f * b + dy, z);
+      return V(x, 0.012 - 0.46 * x * x * Math.pow(f, 1.15) - 0.06 * f * b + dy, z);
     };
     const brimMat = cloth.clone();
     brimMat.side = THREE.DoubleSide;
@@ -204,8 +204,8 @@
           transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2,
         })));
     };
-    patch("front.png", Math.PI / 2, 1.42, 0.55, 0.62);              // "QUEER BACKGAMMON" across the front
-    patch("back.png", BACK - 0.62, 0.42, 0.56, 0.4);              // logo on the back panel, above the strap
+    patch("front.png", Math.PI / 2, 1.15, 0.9, 0.52);              // "QUEER BACKGAMMON" low across the front, as on the cap
+    patch("back.png", BACK, 0.5, 0.66, 0.42);                       // logo centred on the back, above the strap opening
 
     g.position.y = -0.4;
     const outer = new THREE.Group();
