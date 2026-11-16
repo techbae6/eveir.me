@@ -44,16 +44,22 @@ let tilt = -8, targetTilt = -8;
   requestAnimationFrame(frame);
 })();
 
+// Only grab the pointer once a real drag starts; capturing on press would swallow
+// plain clicks on the screens, so their links would never open.
+let captured = false;
 wrap.addEventListener("pointerdown", (e) => {
-  dragging = true; moved = 0; lastX = e.clientX;
-  try { wrap.setPointerCapture(e.pointerId); } catch {}
-  wrap.classList.add("grabbing");
+  dragging = true; moved = 0; lastX = e.clientX; captured = false;
 });
 wrap.addEventListener("pointermove", (e) => {
   if (!dragging) return;
   const dx = e.clientX - lastX;
   lastX = e.clientX;
   moved += Math.abs(dx);
+  if (moved > 6 && !captured) {
+    captured = true;
+    try { wrap.setPointerCapture(e.pointerId); } catch {}
+    wrap.classList.add("grabbing");
+  }
   vel = dx * 0.25;
   angle += vel;
 });

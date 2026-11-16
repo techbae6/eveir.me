@@ -639,3 +639,6 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 .enter .word.in { opacity: 0; filter: blur(10px); transform: translateY(12px); letter-spacing: -.12em; transition: none; }
 .enter .word.tuning { animation: none; }
 @media (max-width: 760px) { .landing .enter { font-size: 15vw; } }
+
+/* the big greeting is decoration: clicks and hovers go through it to the screens behind */
+.landing .enter, .landing .enter * { pointer-events: none; }
