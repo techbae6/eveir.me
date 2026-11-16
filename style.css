@@ -812,15 +812,15 @@ html.leaving main, html.leaving .stage { transform: translateY(-10px); }
 }
 
 /* =========  round 7  ========= */
-/* home: the title is a 3D tag floating just in front of the screen, turning with the ring */
+/* home: the title of the screen you point at, flat and facing you, pinned to that screen */
 .panel .cap { display: none !important; }
-.ring-tag { position: absolute; left: -12px; bottom: -16px; z-index: 3; pointer-events: none; white-space: nowrap;
-  background: var(--red); padding: 9px 13px 10px; box-shadow: 6px 6px 0 #0a1199; backface-visibility: hidden;
-  transform: var(--t) translateZ(0px) rotate(-2deg) scale(.85); opacity: 0;
-  transition: opacity .2s, transform .35s cubic-bezier(.3,1.6,.5,1); }
-.ring-tag b { display: block; font: 800 clamp(15px, 1.7vw, 22px)/1 var(--display); letter-spacing: -.02em; text-transform: uppercase; color: #fff; }
-.ring-tag.on { opacity: 1; transform: var(--t) translateZ(46px) rotate(-2deg); }
-@media (max-width: 760px) { .ring-tag { padding: 6px 9px 7px; box-shadow: 4px 4px 0 #0a1199; left: -6px; bottom: -12px; } .ring-tag b { font-size: 13px; } }
+.ring-flag { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; white-space: nowrap; will-change: transform;
+  background: var(--red); padding: 9px 13px 10px; box-shadow: 6px 6px 0 #0a1199; opacity: 0; transition: opacity .2s; }
+.ring-flag.on { opacity: 1; }
+.ring-flag b { display: block; font: 800 clamp(15px, 1.7vw, 22px)/1 var(--display); letter-spacing: -.02em; text-transform: uppercase; color: #fff; }
+@media (max-width: 760px) { .ring-flag { padding: 6px 9px 7px; box-shadow: 4px 4px 0 #0a1199; } .ring-flag b { font-size: 13px; } }
+body:has(.about-panel.open) .ring-flag { opacity: 0; }
+
 /* graphics: the lock sits right above the grid it unlocks, on the right */
 .pl-ctl { display: flex; justify-content: flex-end; margin: 0 0 16px; }
 .qf-after { margin-bottom: 0; }

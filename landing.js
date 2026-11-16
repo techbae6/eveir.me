@@ -19,22 +19,30 @@ items.forEach((p, i) => {
   ring.appendChild(a);
 });
 
-// each screen's title is a little 3D tag floating in front of it, turning with the ring
-const tags = items.map((p) => {
-  const t = document.createElement("div");
-  t.className = "ring-tag";
-  t.setAttribute("aria-hidden", "true");
-  t.innerHTML = `<b>${p.short || p.venue}</b>`;
-  ring.appendChild(t);
-  return t;
-});
+// the title of the screen you point at: a flat tag that always faces you,
+// pinned to that screen's lower-left corner as the ring turns
+const flag = document.createElement("div");
+flag.className = "ring-flag";
+flag.setAttribute("aria-hidden", "true");
+document.body.appendChild(flag);
+let flagged = null;
+function pin(panel) {
+  if (panel !== flagged) {
+    flagged = panel;
+    if (panel) { const p = items[+panel.dataset.i]; flag.innerHTML = `<b>${p.short || p.venue}</b>`; }
+    flag.classList.toggle("on", !!panel);
+  }
+  if (panel) {
+    const r = panel.getBoundingClientRect();
+    flag.style.transform = `translate(${Math.round(r.left - 10)}px, ${Math.round(r.bottom - 22)}px) rotate(-1.5deg)`;
+  }
+}
 
 function layout() {
   const w = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--panel-w"));
   const r = w / (2 * Math.tan(Math.PI / n)) + 6;
   ring.querySelectorAll(".panel").forEach((p, i) => {
     p.style.transform = `rotateY(${(360 / n) * i}deg) translateZ(${r}px)`;
-    tags[i].style.setProperty("--t", `rotateY(${(360 / n) * i}deg) translateZ(${r}px)`);
   });
 }
 layout();
@@ -92,7 +100,7 @@ document.addEventListener("pointerleave", () => { px = py = -1; });
   const hit = px < 0 || dragging || touch ? null : document.elementFromPoint(px, py)?.closest(".panel");
   ring.querySelectorAll(".panel.lit").forEach((el) => el !== hit && el.classList.remove("lit"));
   if (hit) hit.classList.add("lit");
-  if (!touch) tags.forEach((t, k) => t.classList.toggle("on", !!hit && +hit.dataset.i === k));
+  if (!touch) pin(hit);
   requestAnimationFrame(track);
 })();
 
@@ -104,8 +112,8 @@ let lastFront = -1;
   if (i !== lastFront) {
     lastFront = i;
     ring.querySelectorAll(".panel").forEach((el, k) => el.classList.toggle("facing", k === i));
-    if (touch) tags.forEach((t, k) => t.classList.toggle("on", k === i));
   }
+  if (touch) pin(ring.querySelector(".panel.facing"));
   requestAnimationFrame(faceTrack);
 })();
 if (touch) {

@@ -48,7 +48,7 @@ window.GRAPHICS = [
     src: "assets/graphics/390ceb.jpg", more: ["assets/graphics/852d21.jpg"] },
 ];
 
-// Queer backgammon flyers, zines and stickers: the "less designed" section at the
+// Queer backgammon flyers, zines and stickers: the "anti-design" section at the
 // top of the social graphics page. Order here = order in the strip.
 window.QBG_SERIES = [
   { src: "assets/qbg/pride-in-the-park.jpg", label: "pride in the park · 06.20.26" },
