@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=1794788971">
+  <link rel="stylesheet" href="../style.css?v=1794789815">
 </head>
 <body class="workpage graphicspage">
   <a class="vname" href="index.html" aria-label="Eve Irem, home"><span>eve</span><span>irem</span></a>
@@ -55,10 +55,10 @@
     <button class="lb-nav lb-next" aria-label="Next">›</button>
   </div>
 
-  <script src="../graphics.js?v=1794788971"></script>
+  <script src="../graphics.js?v=1794789815"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="../lowpoly.js?v=1794788971" defer></script>
-  <script src="../fx.js?v=1794788971" defer></script>
+  <script src="../lowpoly.js?v=1794789815" defer></script>
+  <script src="../fx.js?v=1794789815" defer></script>
   <script>
     const grid = document.getElementById("masonry");
     const filters = document.getElementById("filters");
@@ -69,7 +69,7 @@
 
     const plain = (t) => t.replace(/<[^>]+>/g, "").trim();
     const media = (g) => g.src
-      ? `<img src="${g.src}" alt="${plain(g.title)}" loading="lazy">`
+      ? `<img src="${g.src}" alt="${plain(g.title)}" loading="lazy"${g.pos ? ` style="object-position:${g.pos}"` : ""}>`
       : `<div class="ph ph-${g.shape || "square"}"><span>${g.title}</span><small>add image in graphics.js</small></div>`;
 
     function render(kind) {
@@ -77,23 +77,15 @@
       visible = GRAPHICS.filter((g) => kind === "all" || g.kind === kind);
       visible.forEach((g, i) => {
         const b = document.createElement("button");
-        b.className = "gw-item" + (g.big ? " big" : "");
+        b.className = "gw-item" + (g.big ? " big" : "") + (g.fit === "contain" ? " fit" : "");
         b.type = "button";
         b.setAttribute("aria-label", `${plain(g.title)}, ${g.kind}`);
         b.innerHTML = `<div class="gw-inner"><div class="g-media">${media(g)}</div>
           <p class="gw-cap"><b>${g.title}</b><span>${g.kind}${g.year ? " · " + g.year : ""}${g.more ? " · +" + g.more.length : ""}</span></p></div>`;
         b.addEventListener("click", () => open(i));
         grid.appendChild(b);
-        sizer.observe(b.firstElementChild);
       });
     }
-
-    // masonry with mixed widths: every card spans as many 4px rows as its content is tall,
-    // re-measured whenever the card changes size (image loads, window resizes)
-    const sizer = new ResizeObserver((entries) => entries.forEach((en) => {
-      const inner = en.target, row = 4;
-      inner.parentElement.style.gridRowEnd = `span ${Math.max(1, Math.ceil(inner.offsetHeight / row))}`;
-    }));
 
     const kinds = ["all", ...new Set(GRAPHICS.map((g) => g.kind))];
     kinds.forEach((k, i) => {
