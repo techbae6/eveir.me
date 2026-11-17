@@ -902,3 +902,14 @@ body:has(.about-panel.open) .ring-flag { opacity: 0; }
   .qf-zine { order: 2; }
   .qf-zine.open button { width: calc(var(--oh) * 550 / 849); }
 }
+
+/* social graphics: the flyers as a wall that flows downward (no sideways scrolling).
+   Each piece keeps its own shape; rows stretch to fill the width, like a contact sheet. */
+.qf-wall { display: flex; flex-wrap: wrap; gap: 30px 22px; overflow: visible; padding: 0; margin: 0; scroll-snap-type: none; cursor: default; --row: 205px; }
+.qf-wall::after { content: ""; flex: 100 1 0; }
+.qf-wall .qf-item { flex: var(--ar) 1 calc(var(--ar) * var(--row)); min-width: 0; }
+.qf-wall .qf-item button { display: block; width: 100%; }
+.qf-wall .qf-item img { width: 100%; height: auto; aspect-ratio: var(--ar); object-fit: cover; }
+.qf-wall .qf-item figcaption { max-width: none; }
+@media (max-width: 900px) { .qf-wall { --row: 180px; } }
+@media (max-width: 640px) { .qf-wall { --row: 130px; gap: 22px 12px; } .qf-wall .qf-item figcaption { font-size: 9.5px; } }

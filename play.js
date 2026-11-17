@@ -192,19 +192,14 @@
           <li>make it for the room, not the feed</li>
         </ol>
       </div>
-      <div class="qf-strip" tabindex="0" aria-label="Flyers, scroll sideways">
-        ${series.map((t, k) => `<figure class="qf-item"><button type="button" aria-label="Open ${t.label}"><img src="${t.src}" alt="${t.label}" loading="lazy" draggable="false"></button><figcaption>UD-${String(k + 1).padStart(2, "0")} · ${t.label}</figcaption></figure>`).join("")}
+      <div class="qf-strip qf-wall" aria-label="Flyers">
+        ${series.map((t, k) => `<figure class="qf-item" style="--ar:${t.ar || 0.77}"><button type="button" aria-label="Open ${t.label}"><img src="${t.src}" alt="${t.label}" loading="lazy" draggable="false"></button><figcaption>UD-${String(k + 1).padStart(2, "0")} · ${t.label}</figcaption></figure>`).join("")}
       </div>
       <p class="qf-after">everything else <span>↓</span></p>`;
     const anchor = document.querySelector(".g-head");
     anchor.parentNode.insertBefore(sec, anchor.nextSibling);
 
-    // drag the strip sideways with a mouse (touch scrolls natively)
-    const strip = sec.querySelector(".qf-strip");
-    let sd = null, sMoved = 0;
-    strip.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; sd = { x: e.clientX, s: strip.scrollLeft }; sMoved = 0; });
-    addEventListener("pointermove", (e) => { if (!sd) return; sMoved = Math.abs(e.clientX - sd.x); strip.scrollLeft = sd.s - (e.clientX - sd.x); });
-    addEventListener("pointerup", () => { sd = null; });
+    const strip = sec.querySelector(".qf-wall");
 
     // look closer at a flyer
     const look = document.createElement("div");
@@ -216,7 +211,7 @@
     addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     strip.addEventListener("click", (e) => {
       const b = e.target.closest(".qf-item button");
-      if (!b || sMoved > 5) return;
+      if (!b) return;
       const img = b.querySelector("img");
       look.innerHTML = `<img src="${img.src}" alt="${img.alt}"><p>${b.parentNode.querySelector("figcaption").textContent}</p>`;
       look.classList.add("on");
