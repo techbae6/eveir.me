@@ -828,3 +828,77 @@ body:has(.about-panel.open) .ring-flag { opacity: 0; }
 /* "unlearning" is a long word: size the heading to the screen so it never spills */
 .qf h2 { font-size: clamp(2.4rem, 9vw, 9rem); }
 @media (max-width: 900px) { .qf h2 { font-size: 11.4vw; } }
+
+/* social graphics: the zine folds open in 3D */
+.qf-zine button { position: relative; width: calc(430px * 550 / 849); height: 430px; transition: width .8s cubic-bezier(.6,0,.2,1); cursor: pointer; }
+.qf-zine.open button { width: calc(430px * 1100 / 849); }
+.zn-book { position: absolute; top: 0; right: 0; width: calc(430px * 1100 / 849); height: 100%; perspective: 1600px; transform-style: preserve-3d; }
+.zn-leaf { position: absolute; top: 0; left: 50%; width: 50%; height: 100%; transform-style: preserve-3d; }
+.zn-base { box-shadow: 6px 6px 0 rgba(0,0,40,.45); }
+.zn-cover { transform-origin: 0 50%; transition: transform 1s cubic-bezier(.55,0,.2,1); z-index: 2; }
+.qf-zine:not(.open) button:hover .zn-cover { transform: rotateY(-22deg); }
+.qf-zine.open .zn-cover { transform: rotateY(-180deg); }
+.zn-face { position: absolute; inset: 0; display: block; background-size: 200% 100%; background-repeat: no-repeat; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  filter: url(#duo) contrast(1.1); transition: filter .35s; }
+.zn-back { transform: rotateY(180deg); }
+.zn-cover .zn-face { box-shadow: inset 10px 0 18px -12px rgba(0,0,40,.35); }
+.qf-zine button:hover .zn-face, .qf-zine.open .zn-face, .qf-zine.pressed .zn-face { filter: none; }
+@media (max-width: 900px) {
+  .qf-zine button { width: calc(300px * 550 / 849); height: 300px; }
+  .qf-zine.open button { width: calc(300px * 1100 / 849); }
+  .zn-book { width: calc(300px * 1100 / 849); }
+}
+
+/* social graphics: stickers peel off the sheet and stick to the page */
+.qf-sticker { position: absolute; left: 0; top: 0; z-index: 60; cursor: grab; touch-action: none; user-select: none; will-change: transform;
+  filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(2px 4px 3px rgba(0,0,40,.35)); }
+.qf-sticker.off { filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(8px 16px 10px rgba(0,0,40,.35)); }
+.qf-sticker.stuck { filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(1px 2px 1.5px rgba(0,0,40,.35)); }
+.qf-sticker.lift { cursor: grabbing; filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(10px 18px 12px rgba(0,0,40,.35)); }
+.qf-stickers button { cursor: pointer; }
+
+/* =========  round 8: zine + stickers up front  ========= */
+.qf { --oh: 360px; }
+.qf h2 { margin-bottom: 28px; }
+.qf-objects { display: flex; gap: 28px; align-items: flex-start; margin: 0 0 46px; }
+.qf-obj { margin: 0; position: relative; }
+.qf-obj > button { all: unset; display: block; position: relative; cursor: pointer; }
+.qf-obj figcaption { margin-top: 10px; font: 400 10.5px/1.3 ui-monospace, "SFMono-Regular", monospace; opacity: .85; }
+.qf-obj figcaption span { color: var(--red); opacity: 1; }
+/* zine: one page wide when shut, two when open */
+.qf-zine { z-index: 2; }
+.qf-zine button, .qf-zine.open button { width: calc(var(--oh) * 550 / 849); height: var(--oh); transition: width .8s cubic-bezier(.6,0,.2,1); }
+.qf-zine.open button { width: calc(var(--oh) * 1100 / 849); }
+.qf-zine .zn-book { width: calc(var(--oh) * 1100 / 849); }
+/* sticker sheet */
+.qf-stickers img:not(.st-hint) { display: block; height: var(--oh); width: auto; box-shadow: 6px 6px 0 rgba(0,0,40,.45); filter: url(#duo) contrast(1.1); transition: filter .35s; }
+.qf-stickers button:hover img, .qf-stickers.pressed img { filter: none; }
+.st-hint { position: absolute; height: auto; transform-origin: 15% 85%; pointer-events: none; filter: url(#duo) contrast(1.1);
+  animation: wantsoff 4.2s cubic-bezier(.3,.7,.3,1) 1.2s infinite; }
+.qf-stickers button:hover .st-hint, .qf-stickers.pressed .st-hint { filter: none; animation-duration: 1.6s; }
+@keyframes wantsoff {
+  0%, 62%, 100% { transform: none; filter: url(#duo) contrast(1.1) drop-shadow(0 0 0 rgba(0,0,40,0)); }
+  70% { transform: rotate(-7deg) translate(2px, -6px) scale(1.04); filter: url(#duo) contrast(1.1) drop-shadow(4px 8px 5px rgba(0,0,40,.35)); }
+  78% { transform: rotate(-2deg) translate(0, -2px); }
+  84% { transform: rotate(-5deg) translate(1px, -4px) scale(1.02); filter: url(#duo) contrast(1.1) drop-shadow(3px 6px 4px rgba(0,0,40,.3)); }
+  92% { transform: none; }
+}
+.qf-stickers button:hover .st-hint { animation-name: wantsoffcolor; }
+@keyframes wantsoffcolor {
+  0%, 62%, 100% { transform: none; filter: drop-shadow(0 0 0 rgba(0,0,40,0)); }
+  70% { transform: rotate(-7deg) translate(2px, -6px) scale(1.04); filter: drop-shadow(4px 8px 5px rgba(0,0,40,.35)); }
+  78% { transform: rotate(-2deg) translate(0, -2px); }
+  84% { transform: rotate(-5deg) translate(1px, -4px) scale(1.02); filter: drop-shadow(3px 6px 4px rgba(0,0,40,.3)); }
+  92% { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .st-hint { animation: none; } }
+.qf-body { margin-bottom: 44px; }
+@media (max-width: 900px) { .qf { --oh: 300px; } }
+/* phones: sheet first, zine second; the zine opens over the sheet instead of pushing it away */
+@media (max-width: 640px) {
+  .qf { --oh: min(210px, calc((100vw - 32px - 14px) / (550 / 849 + 849 / 1100))); }
+  .qf-objects { gap: 14px; margin-bottom: 34px; }
+  .qf-stickers { order: 1; }
+  .qf-zine { order: 2; }
+  .qf-zine.open button { width: calc(var(--oh) * 550 / 849); }
+}

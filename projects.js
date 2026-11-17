@@ -55,9 +55,9 @@ window.PROJECTS = [
     type: "image", src: "assets/work/queer-backgammon-site.jpg", thumb: "assets/work/queer-backgammon-site.jpg",
     url: "https://queerbackgammon.com" },
 
-  { id: "qbg-flyers", short: "Unlearning Design", title: "Unlearning Design", venue: "Queer Backgammon · flyers, zines, stickers, 2025–", cat: "design", big: true, side: "social",
+  { id: "qbg-flyers", short: "Unlearning Design", title: "Unlearning Design", venue: "Queer Backgammon and more · since spring 2025", cat: "design", big: true, side: "social",
     role: "Founder · design, illustration, print",
-    about: "Taking my own training apart since spring 2025: flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose. Made for the people in the room, not for the market.",
+    about: "Taking my own training apart since spring 2025, and since December 2025 mostly through queer backgammon: flyers, zines and stickers drawn by hand, made from notes-app screenshots, or broken on purpose. Made for the people in the room, not for the market.",
     type: "image", src: "assets/qbg/pride-in-the-park.jpg", thumb: "assets/qbg/pride-in-the-park.jpg", url: "graphics.html#qbg" },
 
   { id: "contrasts", short: "Contrasts", title: "Photo essay on immigration and queerness", venue: "Contrasts · forthcoming", cat: "photography", side: "social",

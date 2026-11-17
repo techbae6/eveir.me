@@ -157,20 +157,32 @@
   wall.addEventListener("pointercancel", drop);
   wall.addEventListener("click", (e) => { if (free && lastMoved > 5) { e.stopPropagation(); e.preventDefault(); lastMoved = 0; } }, true);
 
-  /* ── social site: queer backgammon, "unlearning design" ──────────────── */
+  /* ── social site: "unlearning design" ──────────────────────────────────
+        The zine and the sticker sheet sit right under the heading as objects you can handle:
+        the zine folds open, the stickers peel off and stick to the page. The rest of the
+        flyers follow in a sideways strip. ── */
   if (window.SIDE === "social" && window.QBG_SERIES) {
+    const zine = QBG_SERIES.find((t) => t.zine), sheet = QBG_SERIES.find((t) => t.stickers);
+    const series = QBG_SERIES.filter((t) => !t.zine && !t.stickers);
     const sec = document.createElement("section");
     sec.className = "qf";
     sec.id = "qbg";
     sec.innerHTML = `
-      <p class="qf-kicker">queer backgammon · since spring 2025</p>
+      <p class="qf-kicker">a practice · since spring 2025</p>
       <h2>unlearning <em>design</em></h2>
+      <div class="qf-objects">
+        <figure class="qf-obj qf-zine"><button type="button" aria-label="Open the zine" aria-pressed="false"><div class="zn-book">
+            <div class="zn-leaf zn-base"><i class="zn-face" style="background-image:url('${zine.inside}');background-position:right"></i><i class="zn-face zn-back" style="background-image:url('${zine.src}');background-position:left"></i></div>
+            <div class="zn-leaf zn-cover"><i class="zn-face" style="background-image:url('${zine.src}');background-position:right"></i><i class="zn-face zn-back" style="background-image:url('${zine.inside}');background-position:left"></i></div>
+          </div></button><figcaption>zine · <span>tap to open</span></figcaption></figure>
+        <figure class="qf-obj qf-stickers"><button type="button" aria-label="Peel the stickers"><img src="${sheet.src}" alt="Sticker sheet: open 2 flirt, looking 4 love, looking 4 buddies, lover girl, lover person" draggable="false"></button><figcaption>stickers · <span>tap to peel</span></figcaption></figure>
+      </div>
       <div class="qf-body">
         <div class="qf-text">
           <p class="qf-lead">Since finishing Ruben Pater’s <em>CAPS LOCK</em> in spring 2025, I’ve been taking my own training apart.</p>
           <p>A lot of what we call “good design” is a taste we were sold: slick, Western, built for convenience, made to move product. So I draw by hand, screenshot my notes app, and leave things broken on purpose. In the era of AI, the human and the imperfect feel more valuable than ever.</p>
           <p>True anti-design probably isn’t possible. Sooner or later, everything gets turned into a look someone can sell. So it’s a direction more than a destination: design for the people in the room, not for the market.</p>
-          <p>Queer backgammon is where I push it furthest. Every flyer, zine and sticker below.</p>
+          <p>Since December 2025, queer backgammon is where I push it furthest: the zine and stickers above, every flyer below. Hot Girls Eat Dolma belongs here too.</p>
           <a class="qf-link" href="https://queerbackgammon.com" target="_blank" rel="noopener">queerbackgammon.com ↗</a>
         </div>
         <ol class="qf-rules">
@@ -180,8 +192,8 @@
           <li>make it for the room, not the feed</li>
         </ol>
       </div>
-      <div class="qf-strip" tabindex="0" aria-label="Queer backgammon flyers, scroll sideways">
-        ${QBG_SERIES.map((t, k) => `<figure class="qf-item"><button type="button" aria-label="Open ${t.label}"><img src="${t.src}" alt="${t.label}" loading="lazy" draggable="false"></button><figcaption>QB-${String(k + 1).padStart(2, "0")} · ${t.label}</figcaption></figure>`).join("")}
+      <div class="qf-strip" tabindex="0" aria-label="Flyers, scroll sideways">
+        ${series.map((t, k) => `<figure class="qf-item"><button type="button" aria-label="Open ${t.label}"><img src="${t.src}" alt="${t.label}" loading="lazy" draggable="false"></button><figcaption>UD-${String(k + 1).padStart(2, "0")} · ${t.label}</figcaption></figure>`).join("")}
       </div>
       <p class="qf-after">everything else <span>↓</span></p>`;
     const anchor = document.querySelector(".g-head");
@@ -194,7 +206,7 @@
     addEventListener("pointermove", (e) => { if (!sd) return; sMoved = Math.abs(e.clientX - sd.x); strip.scrollLeft = sd.s - (e.clientX - sd.x); });
     addEventListener("pointerup", () => { sd = null; });
 
-    // look closer
+    // look closer at a flyer
     const look = document.createElement("div");
     look.className = "qf-look";
     look.setAttribute("role", "dialog");
@@ -209,9 +221,189 @@
       look.innerHTML = `<img src="${img.src}" alt="${img.alt}"><p>${b.parentNode.querySelector("figcaption").textContent}</p>`;
       look.classList.add("on");
     });
-    // phones: a flyer shows its own colours while touched
-    strip.addEventListener("touchstart", (e) => e.target.closest(".qf-item")?.classList.add("pressed"), { passive: true });
-    strip.addEventListener("touchend", () => setTimeout(() => strip.querySelectorAll(".pressed").forEach((el) => el.classList.remove("pressed")), 450));
+
+    // the zine: fold it open / shut
+    const zFig = sec.querySelector(".qf-zine"), zBtn = zFig.querySelector("button");
+    zBtn.addEventListener("click", () => {
+      const open = zBtn.getAttribute("aria-pressed") !== "true";
+      zBtn.setAttribute("aria-pressed", String(open));
+      zFig.classList.toggle("open", open);
+      zFig.querySelector("figcaption span").textContent = open ? "tap to close" : "tap to open";
+    });
+
+    // phones: things show their own colours while touched
+    sec.addEventListener("touchstart", (e) => e.target.closest(".qf-item, .qf-obj")?.classList.add("pressed"), { passive: true });
+    sec.addEventListener("touchend", () => setTimeout(() => sec.querySelectorAll(".pressed").forEach((el) => el.classList.remove("pressed")), 450));
     if (location.hash === "#qbg") setTimeout(() => sec.scrollIntoView({ behavior: "smooth", block: "start" }), 300);
+
+    /* ── stickers ─────────────────────────────────────────── */
+    const sFig = sec.querySelector(".qf-stickers"), sBtn = sFig.querySelector("button"), sImg = sBtn.querySelector("img");
+    let cut = null, out = false, hint = null;
+    function cutOut(img) {
+      // find each sticker on the sheet: flood the white paper in from the edges,
+      // then every island of colour that is left is one sticker
+      const W = img.naturalWidth, H = img.naturalHeight;
+      const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      const cx = cv.getContext("2d"); cx.drawImage(img, 0, 0);
+      const d = cx.getImageData(0, 0, W, H).data, N = W * H;
+      const paper = (i) => d[i * 4] > 232 && d[i * 4 + 1] > 232 && d[i * 4 + 2] > 232;
+      const lab = new Int32Array(N); // 0 unknown, -1 paper, >0 sticker id
+      const q = new Int32Array(N);
+      let qh = 0, qt = 0;
+      const push = (i) => { if (lab[i] === 0 && paper(i)) { lab[i] = -1; q[qt++] = i; } };
+      for (let x = 0; x < W; x++) { push(x); push((H - 1) * W + x); }
+      for (let y = 0; y < H; y++) { push(y * W); push(y * W + W - 1); }
+      while (qh < qt) { const i = q[qh++], x = i % W; if (x > 0) push(i - 1); if (x < W - 1) push(i + 1); if (i >= W) push(i - W); if (i < N - W) push(i + W); }
+      const parts = [];
+      for (let s0 = 0; s0 < N; s0++) {
+        if (lab[s0] !== 0) continue;
+        const id = parts.length + 1; let x0 = W, y0 = H, x1 = 0, y1 = 0, n = 0;
+        qh = qt = 0; lab[s0] = id; q[qt++] = s0;
+        while (qh < qt) {
+          const i = q[qh++], x = i % W, y = (i - x) / W; n++;
+          if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+          for (const j of [x > 0 ? i - 1 : -1, x < W - 1 ? i + 1 : -1, i - W, i + W]) if (j >= 0 && j < N && lab[j] === 0) { lab[j] = id; q[qt++] = j; }
+        }
+        parts.push({ id, x0, y0, x1, y1, n });
+      }
+      const real = parts.filter((p) => p.n > 900);
+      // the cut-outs, plus the empty backing sheet with pale die-cut shapes where they were
+      const back = cx.getImageData(0, 0, W, H);
+      const list = real.map((p) => {
+        const w = p.x1 - p.x0 + 1, h = p.y1 - p.y0 + 1;
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const g = c.getContext("2d"), o = g.createImageData(w, h);
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          const i = (p.y0 + y) * W + p.x0 + x;
+          if (lab[i] !== p.id) continue;
+          const k = (y * w + x) * 4; o.data[k] = d[i * 4]; o.data[k + 1] = d[i * 4 + 1]; o.data[k + 2] = d[i * 4 + 2]; o.data[k + 3] = 255;
+          back.data[i * 4] = 238; back.data[i * 4 + 1] = 236; back.data[i * 4 + 2] = 244;
+        }
+        g.putImageData(o, 0, 0);
+        return { url: c.toDataURL(), x: p.x0, y: p.y0, w, h };
+      });
+      cx.putImageData(back, 0, 0);
+      return { list, empty: cv.toDataURL("image/jpeg", 0.9), full: img.src, W, H };
+    }
+
+    // a hint: one sticker on the sheet keeps lifting its corner, like it wants to come off
+    function prepare() {
+      if (cut || !sImg.naturalWidth) return;
+      try { cut = cutOut(sImg); } catch { return; }
+      const pick = cut.list.reduce((a, b) => (b.x - b.y > a.x - a.y ? b : a)); // the top-right one
+      hint = document.createElement("img");
+      hint.className = "st-hint"; hint.src = pick.url; hint.alt = ""; hint.draggable = false;
+      Object.assign(hint.style, { left: (pick.x / cut.W * 100) + "%", top: (pick.y / cut.H * 100) + "%", width: (pick.w / cut.W * 100) + "%" });
+      sBtn.appendChild(hint);
+    }
+    const later = (f) => ("requestIdleCallback" in window ? requestIdleCallback(f, { timeout: 1500 }) : setTimeout(f, 400));
+    if (sImg.complete) later(prepare); else sImg.addEventListener("load", () => later(prepare), { once: true });
+
+    const flying = [];
+    let raf2 = 0, last2 = 0;
+    sBtn.addEventListener("click", () => {
+      if (!cut) prepare();
+      if (!cut) return;
+      const r = sImg.getBoundingClientRect(), k = r.width / cut.W;
+      const label = sFig.querySelector("figcaption span");
+      if (!out) {
+        out = true;
+        sImg.src = cut.empty;
+        if (hint) hint.hidden = true;
+        label.textContent = "tap to put them back";
+        // where they land: on wide screens, the empty table to the right of the sheet;
+        // on narrow ones, scattered over the zine and the sheet themselves
+        const box = sec.getBoundingClientRect(), ob = sec.querySelector(".qf-objects").getBoundingClientRect();
+        const room = box.right - r.right - 30, small = room < 300;
+        const L = (small ? box.left : r.right + 30) + scrollX, R = box.right + scrollX;
+        const T = ob.top + scrollY, B = ob.bottom + scrollY;
+        cut.list.map((_, i) => i).sort(() => Math.random() - 0.5).forEach((i, n) => {
+          const s = cut.list[i];
+          const el = document.createElement("img");
+          el.className = "qf-sticker"; el.src = s.url; el.alt = ""; el.draggable = false;
+          const grow = 1.15, w = s.w * k * grow, h = s.h * k * grow;
+          const p = { el, x: r.left + scrollX + s.x * k, y: r.top + scrollY + s.y * k, w, h, vx: 0, vy: 0, rot: 0, av: 0,
+            phase: "wait", t0: 0, ph: Math.random() * 6.3, fl: 4 + Math.random() * 3, side: Math.random() < 0.5 ? -1 : 1,
+            // land somewhere on the page below the sheet, spread across the section
+            // keep clear of the edges and of the captions under the sheet and zine
+            fx: L + 6 + Math.random() * Math.max(10, R - L - w * 1.15 - 12), floor: T + Math.random() * Math.max(10, B - T - h * 1.3 - 36) };
+          Object.assign(el.style, { width: w + "px", height: h + "px", transform: `translate(${p.x}px, ${p.y}px)` });
+          document.body.appendChild(el);
+          flying.push(p);
+          setTimeout(() => { p.phase = "peel"; p.t0 = performance.now(); el.classList.add("off"); }, 60 + n * 85);
+        });
+        last2 = performance.now();
+        fall();
+      } else {
+        // put them back: every sticker flies home to its spot on the sheet
+        out = false;
+        label.textContent = "tap to peel";
+        cancelAnimationFrame(raf2);
+        const done = flying.splice(0).map((p) => {
+          const s = cut.list.find((c) => p.el.src === c.url) || { x: 0, y: 0 };
+          const tx = r.left + scrollX + s.x * k, ty = r.top + scrollY + s.y * k, sc = (s.w * k) / p.w;
+          return p.el.animate([{ transform: p.el.style.transform }, { transform: `translate(${tx}px, ${ty}px) rotate(0deg) scale(${sc})` }],
+            { duration: 520 + Math.random() * 240, easing: "cubic-bezier(.5,0,.2,1)", fill: "forwards" }).finished.catch(() => {});
+        });
+        // (and a timer, in case the browser pauses animations in a background tab)
+        const home = () => { document.querySelectorAll(".qf-sticker").forEach((el) => { if (!flying.some((f) => f.el === el)) el.remove(); }); if (!out) { sImg.src = cut.full; if (hint) hint.hidden = false; } };
+        Promise.race([Promise.all(done), new Promise((ok) => setTimeout(ok, 900))]).then(home);
+      }
+    });
+
+    // paper physics: a quick peel from one corner, then it drifts down, swaying and turning
+    // like a light piece of paper, and sticks flat where it lands
+    function fall() {
+      cancelAnimationFrame(raf2);
+      const now = performance.now(), dt = Math.min(0.033, (now - last2) / 1000); last2 = now;
+      let busy = false;
+      for (const p of flying) {
+        if (p.phase === "rest" || p.held) continue;
+        busy = true;
+        if (p.phase === "wait") continue;
+        if (p.phase === "peel") {
+          const u = Math.min(1, (now - p.t0) / 260);
+          p.rot = p.side * 14 * Math.sin(u * Math.PI / 2); p.y -= 18 * dt * 10 * (1 - u);
+          if (u >= 1) { p.phase = "fly"; p.vx = (p.fx - p.x) / 1.1; p.vy = -160 - Math.random() * 80; p.av = p.side * (40 + Math.random() * 60); }
+        } else {
+          const t = now / 1000;
+          p.vy += 1500 * dt;                                    // gravity
+          p.vy -= p.vy * 2.2 * dt;                              // air holds it back
+          p.vx += Math.sin(t * p.fl + p.ph) * 900 * dt;         // flutter side to side
+          p.vx += ((p.fx - p.x) * 1.4 - p.vx) * 1.2 * dt;       // drift toward where it will land
+          p.av += (p.vx * 0.12 - p.av) * 3 * dt;                // turns with the sway
+          p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.av * dt;
+          if (p.y >= p.floor) {
+            p.y = p.floor; p.phase = "rest";
+            p.rot = ((p.rot + 180) % 360 + 360) % 360 - 180;
+            p.el.classList.remove("off"); p.el.classList.add("stuck");
+            p.el.animate([{ scale: "1.07" }, { scale: "0.98" }, { scale: "1" }], { duration: 220, easing: "ease-out" });
+          }
+        }
+        p.el.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) rotate(${p.rot.toFixed(1)}deg)`;
+      }
+      if (busy) raf2 = requestAnimationFrame(fall);
+    }
+
+    // a landed sticker can be picked up and stuck somewhere else (mouse or finger)
+    let held = null;
+    addEventListener("pointerdown", (e) => {
+      const el = e.target.closest?.(".qf-sticker"); if (!el) return;
+      const p = flying.find((f) => f.el === el); if (!p || p.phase !== "rest") return;
+      e.preventDefault();
+      held = { p, dx: e.pageX - p.x, dy: e.pageY - p.y }; p.held = true; el.classList.add("lift");
+      el.parentNode.appendChild(el);
+    });
+    addEventListener("pointermove", (e) => {
+      if (!held) return; const { p } = held;
+      p.x = e.pageX - held.dx; p.y = e.pageY - held.dy;
+      p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rot.toFixed(1)}deg) scale(1.06)`;
+    });
+    const put = () => {
+      if (!held) return; const { p } = held; held = null; p.held = false; p.el.classList.remove("lift");
+      p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rot.toFixed(1)}deg)`;
+    };
+    addEventListener("pointerup", put);
+    addEventListener("pointercancel", put);
   }
 })();

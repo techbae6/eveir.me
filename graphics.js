@@ -48,27 +48,28 @@ window.GRAPHICS = [
     src: "assets/graphics/390ceb.jpg", more: ["assets/graphics/852d21.jpg"] },
 ];
 
-// Queer backgammon flyers, zines and stickers: the "unlearning design" section at the
+// Queer backgammon flyers, zines and stickers (plus other anti-design pieces like Dolma): the "unlearning design" section at the
 // top of the social graphics page. Order here = order in the strip.
 window.QBG_SERIES = [
   { src: "assets/qbg/pride-in-the-park.jpg", label: "pride in the park · 06.20.26" },
   { src: "assets/qbg/speed-night.jpg", label: "speed backgammon night · the bush" },
-  { src: "assets/qbg/zine-tavla-setup.jpg", label: "zine · tavla setup + etymology", wide: true },
+  // the zine is one sheet printed on both sides and folded: outside = back cover | front cover, inside = the spread
+  { zine: true, src: "assets/qbg/zine-what-we-served.jpg", inside: "assets/qbg/zine-tavla-setup.jpg", label: "zine · tap to open" },
   { src: "assets/qbg/half-birthday-red.jpg", label: "half birthday · 05.09" },
+  { src: "assets/graphics/dolma.jpg", label: "hot girls eat dolma · poster" },
   { src: "assets/qbg/bodyhack.jpg", label: "x bodyhack · nowadays · 06.27" },
   { src: "assets/qbg/chair.jpg", label: "the plastic chair" },
   { src: "assets/qbg/riis-beach.jpg", label: "riis people’s beach · 07.25.26" },
   { src: "assets/qbg/takhte-tavla-green.jpg", label: "takhte · tavla · nardi · 04.26" },
   { src: "assets/graphics/goes-west.jpg", label: "goes west · los angeles" },
-  { src: "assets/qbg/stickers.jpg", label: "stickers · open 2 flirt" },
+  { stickers: true, src: "assets/qbg/stickers.jpg", label: "stickers · tap to peel" },
   { src: "assets/qbg/boyfriend-0315.jpg", label: "boyfriend co-op · 03.15.26" },
-  { src: "assets/qbg/zine-what-we-served.jpg", label: "zine · what we served", wide: true },
   { src: "assets/qbg/half-birthday-grey.jpg", label: "half birthday · alt" },
   { src: "assets/qbg/boyfriend-dec28-blue.jpg", label: "boyfriend co-op · 12.28 · blue" },
   { src: "assets/qbg/boyfriend-dec28-pink.jpg", label: "boyfriend co-op · 12.28 · pink" },
   { src: "assets/graphics/baklava-social-club.jpg", label: "baklava social club" },
   { src: "assets/graphics/hat-front.jpg", label: "chosen family hat" },
-].map((t) => ({ ...t, src: (window.BASE || "") + t.src }));
+].map((t) => ({ ...t, src: (window.BASE || "") + t.src, inside: t.inside && (window.BASE || "") + t.inside }));
 
 // keep only what belongs on this side, and fix image paths for pages inside /selam/
 window.GRAPHICS = window.GRAPHICS
